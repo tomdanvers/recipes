@@ -1,0 +1,14 @@
+/* Coldwater Styling */
+
+$backgroundWidth: 1920;
+$backgroundInnerWidth: 1400;
+
+$backgroundInnerPercent: $backgroundInnerWidth/$backgroundWidth*100;
+$backgroundMarginPercent: (100-$backgroundInnerPercent)*.5;
+
+.constrained {
+	margin-left: $backgroundMarginPercent+%;
+    margin-right: $backgroundMarginPercent+%;
+	width: $backgroundInnerPercent+%;
+	
+}

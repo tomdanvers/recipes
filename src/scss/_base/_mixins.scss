@@ -1,0 +1,141 @@
+/**
+ * Mixins
+ */
+
+
+// Font size mixing to convert pixel fonts into REMS (with a pixel font fallback for older browsers).
+
+@mixin font-size($font-size, $line-height:true) {
+    font-size: $font-size;
+    font-size: ($font-size / $base-font-size)*1rem;
+
+    @if $line-height == true {
+        line-height: ceil($font-size / $base-line-height) * ($base-line-height / $font-size);
+    }
+
+}
+
+
+// Vendor Prefixing!
+
+@mixin vendor($property, $value...){
+    -webkit-#{$property}:$value;
+       -moz-#{$property}:$value;
+        -ms-#{$property}:$value;
+         -o-#{$property}:$value;
+            #{$property}:$value;
+}
+
+
+// Vertical Align mixin to vertical align any element (including elemnts inside a fluid container)
+
+@mixin vertical-align {
+	position: relative;
+	top: 50%;
+	@include vendor(transform, translateY(-50%));
+}
+
+
+// Box sizing Prefixer
+
+@mixin box-sizing($value: border-box) {
+	-webkit-box-sizing: $value;
+	-moz-box-sizing: $value;
+	box-sizing: $value;
+}
+
+// Opacity mixin for normalising opacity in modern browsers and old IE
+
+@mixin opacity($value){
+    opacity: $value;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity="+$value*100+")"; /* IE 8 */
+    filter: alpha(opacity=$value*100); /* IE 5-7 */
+}
+
+// CSS3 Calc Mixin
+
+@mixin calc($property, $expression) {
+
+    #{$property}: -webkit-calc(#{$expression});
+    #{$property}: -moz-calc(#{$expression});
+    #{$property}: calc(#{$expression});
+
+}
+
+// Breakpoints
+
+@mixin breakpoint($breakpoint) {
+
+    @if $breakpoint == $desk {
+
+        @media screen and (max-width: $desk) { @content; }
+
+    } @elseif $breakpoint == $lap {
+        
+        @media screen and (max-width: $lap) { @content; }
+
+    } @elseif $breakpoint == $tab {
+        
+        @media screen and (max-width: $tab) { @content; }
+
+    } @elseif $breakpoint == $palm {
+        
+        @media screen and (max-width: $palm) { @content; }
+
+    } @elseif $breakpoint == $mob {
+        
+        @media screen and (max-width: $mob) { @content; }
+
+    } @elseif $breakpoint == $mob-small {
+        
+        @media screen and (max-width: $mob-small) { @content; }
+
+    } @elseif $breakpoint == 'desk-only' {
+        
+        @media screen and (min-width: $palm + 1) { @content; }
+
+    } @elseif $breakpoint == 'lap-only' {
+        
+        @media screen and (min-width: $mob + 1) { @content; }
+
+    } @elseif $breakpoint == 'mobile-only' {
+        
+        @media screen and (max-width: $mob) { @content; }
+
+    }
+
+}
+
+// CSS3 Keyframe Animations
+
+@mixin animation($animate...) {
+    $max: length($animate);
+    $animations: '';
+
+    @for $i from 1 through $max {
+        $animations: #{$animations + nth($animate, $i)};
+
+        @if $i < $max {
+            $animations: #{$animations + ", "};
+        }
+    }
+    -webkit-animation: $animations;
+    -moz-animation:    $animations;
+    -o-animation:      $animations;
+    animation:         $animations;
+}
+
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
