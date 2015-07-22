@@ -35,27 +35,30 @@ module.exports = React.createClass({
             switch (this.props.typeIn) {
                 case 'textarea':
                     return (
-                        <textarea id={this.props.id} value={this.props.value} className={'EditableInput ' + this.props.className} ref="input" onFocus={this.focusHandler} onChange={this.changeHandler} onBlur={this.blurHandler}></textarea>
+                        <textarea id={this.props.id} value={this.props.value} className={'EditableInput isEditing ' + this.props.className} ref="input" onFocus={this.focusHandler} onChange={this.changeHandler} onBlur={this.blurHandler}></textarea>
                     );
                     break;
                 default:
                     return (
-                        <input id={this.props.id} value={this.props.value} className={'EditableInput ' + this.props.className} ref="input" onFocus={this.focusHandler} onChange={this.changeHandler} onBlur={this.blurHandler} />
+                        <input id={this.props.id} value={this.props.value} className={'EditableInput isEditing ' + this.props.className} ref="input" onFocus={this.focusHandler} onChange={this.changeHandler} onBlur={this.blurHandler} />
                     );
                     break;
             }
         } else {
             switch (this.props.typeOut) {
                 case 'ol':
-                    var items = this.props.value.split('\n');
-                    console.log('items', items);
+                    var items = this.props.value === undefined ? [] : this.props.value.split('\n');
                     return (
                         <ol id={this.props.id} className={'EditableInput ' + this.props.className} onClick={this.clickHandler}>
                             {items.map(function(item) {
-                                console.log('item', item);
                                 return <li key={item}>{item}</li>
                             })}
                         </ol>
+                    );
+                    break;
+                case 'h1':
+                    return (
+                        <h1 id={this.props.id} className={'EditableInput ' + this.props.className} onClick={this.clickHandler}>{this.props.value}</h1>
                     );
                     break;
                 default:

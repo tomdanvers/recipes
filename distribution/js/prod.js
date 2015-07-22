@@ -32416,27 +32416,30 @@ module.exports = React.createClass({displayName: "exports",
             switch (this.props.typeIn) {
                 case 'textarea':
                     return (
-                        React.createElement("textarea", {id: this.props.id, value: this.props.value, className: 'EditableInput ' + this.props.className, ref: "input", onFocus: this.focusHandler, onChange: this.changeHandler, onBlur: this.blurHandler})
+                        React.createElement("textarea", {id: this.props.id, value: this.props.value, className: 'EditableInput isEditing ' + this.props.className, ref: "input", onFocus: this.focusHandler, onChange: this.changeHandler, onBlur: this.blurHandler})
                     );
                     break;
                 default:
                     return (
-                        React.createElement("input", {id: this.props.id, value: this.props.value, className: 'EditableInput ' + this.props.className, ref: "input", onFocus: this.focusHandler, onChange: this.changeHandler, onBlur: this.blurHandler})
+                        React.createElement("input", {id: this.props.id, value: this.props.value, className: 'EditableInput isEditing ' + this.props.className, ref: "input", onFocus: this.focusHandler, onChange: this.changeHandler, onBlur: this.blurHandler})
                     );
                     break;
             }
         } else {
             switch (this.props.typeOut) {
                 case 'ol':
-                    var items = this.props.value.split('\n');
-                    console.log('items', items);
+                    var items = this.props.value === undefined ? [] : this.props.value.split('\n');
                     return (
                         React.createElement("ol", {id: this.props.id, className: 'EditableInput ' + this.props.className, onClick: this.clickHandler}, 
                             items.map(function(item) {
-                                console.log('item', item);
                                 return React.createElement("li", {key: item}, item)
                             })
                         )
+                    );
+                    break;
+                case 'h1':
+                    return (
+                        React.createElement("h1", {id: this.props.id, className: 'EditableInput ' + this.props.className, onClick: this.clickHandler}, this.props.value)
                     );
                     break;
                 default:
@@ -32510,16 +32513,22 @@ module.exports = React.createClass({displayName: "exports",
     blurHandler: function(event) {
         this.props.onEditStop(event.target.id);
     },
+    removeHandler: function(event) {
+        if (confirm('Are you sure you want to remove this recipe?')) {
+            this.props.onRecipeRemove();
+        }
+    },
     render: function() {
 
         return (
 
             React.createElement("div", null, 
-                React.createElement(EditableInput, {id: "name", typeIn: "input", typeOut: "div", className: "h1", value: this.props.name, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                React.createElement(EditableInput, {id: "name", typeIn: "input", typeOut: "h1", className: "h1", value: this.props.name, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                 React.createElement("h2", null, "Ingredients"), 
-                React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", value: this.props.ingredients, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredients", value: this.props.ingredients, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                 React.createElement("h2", null, "Method"), 
-                React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", value: this.props.method, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
+                React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__method", value: this.props.method, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                React.createElement("button", {onClick: this.removeHandler}, "Remove Recipe")
             )
 
         );
@@ -32607,21 +32616,21 @@ module.exports = React.createClass({displayName: "exports",
                 .dispatch()
                 .then(function(recipe) {
                     this.refreshQueries();
-                    this.setState({
-                        selectedRecipe: recipe
-                    });
+                    this.selectRecipe(recipe);
                 }.bind(this));
                 break;
             default:
-                var recipe = this.getRecipeById(id);
-                this.setState({
-                    selectedRecipe: recipe,
-                    name: recipe.name,
-                    ingredients: recipe.ingredients,
-                    method: recipe.method
-                });
+                this.selectRecipe(this.getRecipeById(id));
                 break;
         }
+    },
+    selectRecipe: function(recipe) {
+        this.setState({
+            selectedRecipe: recipe,
+            name: recipe.name,
+            ingredients: recipe.ingredients,
+            method: recipe.method
+        });
     },
     getRecipeById: function(id) {
         for (var i = 0; i < this.data.recipes.length; i++) {
@@ -32631,15 +32640,11 @@ module.exports = React.createClass({displayName: "exports",
         }
     },
     editStartHandler: function(type) {
-        this.batch = new ParseReact.Mutation.Batch();
     },
     editUpdateHandler: function(type, value) {
         
         var changed = {};
         changed[type] = value;
-
-        // ParseReact.Mutation.Set(this.state.selectedRecipe, changed)
-        //     .dispatch({batch:this.batch});
 
         this.setState(changed);
 
@@ -32653,9 +32658,17 @@ module.exports = React.createClass({displayName: "exports",
             .dispatch();
 
     },
+    recipeRemoveHandler: function() {
+        ParseReact.Mutation.Destroy(this.state.selectedRecipe)
+            .dispatch()
+            .then(function() {
+                this.refreshQueries();
+                this.selectRecipe(this.data.recipes[0]);
+            }.bind(this));
+    },
     render: function() {
         var user = Parse.User.current();
-        var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {name: this.state.name, ingredients: this.state.ingredients, method: this.state.method, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler})) : React.createElement(UserNew, null);
+        var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {name: this.state.name, ingredients: this.state.ingredients, method: this.state.method, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
         return (
             React.createElement("div", null, 
                 React.createElement("div", null, 
@@ -32664,7 +32677,7 @@ module.exports = React.createClass({displayName: "exports",
                 React.createElement(UserNav, {recipes: this.data.recipes, onClick: this.navClickHandler}), 
                 recipe, 
                 React.createElement("div", null, 
-                    React.createElement("a", {href: "#", onClick: Parse.User.logOut}, "Log out")
+                    React.createElement("button", {onClick: Parse.User.logOut}, "Log out")
                 )
             )
         );

@@ -33,21 +33,21 @@ module.exports = React.createClass({
                 .dispatch()
                 .then(function(recipe) {
                     this.refreshQueries();
-                    this.setState({
-                        selectedRecipe: recipe
-                    });
+                    this.selectRecipe(recipe);
                 }.bind(this));
                 break;
             default:
-                var recipe = this.getRecipeById(id);
-                this.setState({
-                    selectedRecipe: recipe,
-                    name: recipe.name,
-                    ingredients: recipe.ingredients,
-                    method: recipe.method
-                });
+                this.selectRecipe(this.getRecipeById(id));
                 break;
         }
+    },
+    selectRecipe: function(recipe) {
+        this.setState({
+            selectedRecipe: recipe,
+            name: recipe.name,
+            ingredients: recipe.ingredients,
+            method: recipe.method
+        });
     },
     getRecipeById: function(id) {
         for (var i = 0; i < this.data.recipes.length; i++) {
@@ -57,15 +57,11 @@ module.exports = React.createClass({
         }
     },
     editStartHandler: function(type) {
-        this.batch = new ParseReact.Mutation.Batch();
     },
     editUpdateHandler: function(type, value) {
         
         var changed = {};
         changed[type] = value;
-
-        // ParseReact.Mutation.Set(this.state.selectedRecipe, changed)
-        //     .dispatch({batch:this.batch});
 
         this.setState(changed);
 
@@ -79,9 +75,17 @@ module.exports = React.createClass({
             .dispatch();
 
     },
+    recipeRemoveHandler: function() {
+        ParseReact.Mutation.Destroy(this.state.selectedRecipe)
+            .dispatch()
+            .then(function() {
+                this.refreshQueries();
+                this.selectRecipe(this.data.recipes[0]);
+            }.bind(this));
+    },
     render: function() {
         var user = Parse.User.current();
-        var recipe = this.state.selectedRecipe ? (<Recipe name={this.state.name} ingredients={this.state.ingredients} method={this.state.method} onEditStart={this.editStartHandler} onEditUpdate={this.editUpdateHandler} onEditStop={this.editStopHandler} />) : <UserNew/>;
+        var recipe = this.state.selectedRecipe ? (<Recipe name={this.state.name} ingredients={this.state.ingredients} method={this.state.method} onEditStart={this.editStartHandler} onEditUpdate={this.editUpdateHandler} onEditStop={this.editStopHandler} onRecipeRemove={this.recipeRemoveHandler}/>) : <UserNew/>;
         return (
             <div>
                 <div>
@@ -90,7 +94,7 @@ module.exports = React.createClass({
                 <UserNav recipes={this.data.recipes} onClick={this.navClickHandler}/>
                 {recipe}
                 <div>
-                    <a href="#" onClick={Parse.User.logOut}>Log out</a>
+                    <button onClick={Parse.User.logOut}>Log out</button>
                 </div>
             </div>
         );
