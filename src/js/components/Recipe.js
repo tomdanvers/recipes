@@ -23,7 +23,7 @@ module.exports = React.createClass({
 
         return (
 
-            <div>
+            <div className="Recipe">
                 <EditableInput id="name" typeIn="input" typeOut="h1" className="h1" value={this.props.name} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
                 <h2>Ingredients</h2>
                 <EditableInput id="ingredients" typeIn="textarea" typeOut="div" className="Recipe__ingredients" value={this.props.ingredients} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />

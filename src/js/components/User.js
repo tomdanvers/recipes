@@ -12,8 +12,8 @@ module.exports = React.createClass({
     observe: function() {
         return {
             recipes: (new Parse.Query('Recipe'))
-                        .equalTo('user', Parse.User.current())
-                        .descending('createdAt')
+                .equalTo('user', Parse.User.current())
+                .descending('createdAt')
         };
     },
     getInitialState: function() {
@@ -87,13 +87,11 @@ module.exports = React.createClass({
         var user = Parse.User.current();
         var recipe = this.state.selectedRecipe ? (<Recipe name={this.state.name} ingredients={this.state.ingredients} method={this.state.method} onEditStart={this.editStartHandler} onEditUpdate={this.editUpdateHandler} onEditStop={this.editStopHandler} onRecipeRemove={this.recipeRemoveHandler}/>) : <UserNew/>;
         return (
-            <div>
-                <div>
-                    Hello {user.get('username')}, {this.welcomeMessage()}
-                </div>
+            <div className="User">
                 <UserNav recipes={this.data.recipes} onClick={this.navClickHandler}/>
+                <h1 className="Header">Hello {user.get('username')}, {this.welcomeMessage()}</h1>
                 {recipe}
-                <div>
+                <div className="Footer">
                     <button onClick={Parse.User.logOut}>Log out</button>
                 </div>
             </div>

@@ -1,5 +1,6 @@
-.Recipe__ingredients, .Recipe__method {
-  box-sizing: border-box; }
-
-.Recipe__ingredients {
-  padding-left: 40px; }
+.Recipe {
+  padding: 17px; }
+  .Recipe .Recipe__ingredients, .Recipe .Recipe__method {
+    box-sizing: border-box; }
+  .Recipe .Recipe__ingredients {
+    padding-left: 40px; }

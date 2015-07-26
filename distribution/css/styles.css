@@ -8,6 +8,10 @@
 /**
  * Global Variables
  */
+html, body {
+  margin: 0;
+  padding: 0; }
+
 ol, ul {
   box-sizing: border-box; }
 
@@ -18,18 +22,72 @@ html, body, div {
   font-family: "Prohibition W00 Regular", Helvetica Neue, Helvetica, Arial, Sans-serif; }
 
 h1, .h1 {
-  font-size: 2em; }
+  font-size: 2em;
+  margin-top: 0; }
 
 h2, .h2 {
   font-size: 1.5em; }
 
 /* Component Imports */
 .EditableInput {
+  margin: 0;
   white-space: pre-line;
   width: 100%; }
+  .EditableInput.EditableInput__textarea {
+    border: none;
+    display: block;
+    font-size: 1em;
+    font-family: Helvetica Neue, Helvetica, Arial, Sans-serif;
+    height: 150px; }
+  .EditableInput.EditableInput__ol li {
+    margin-bottom: 5px; }
+    .EditableInput.EditableInput__ol li:last-child {
+      margin-bottom: 0; }
+  .EditableInput.EditableInput__div div {
+    margin-bottom: 5px; }
 
-.Recipe__ingredients, .Recipe__method {
-  box-sizing: border-box; }
+.UserNav .UserNav__toggle {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-image: url(/img/nav-toggle.gif); }
 
-.Recipe__ingredients {
-  padding-left: 40px; }
+.UserNav .UserNav__items {
+  background: #EEE;
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 15px;
+  position: fixed;
+  right: 0;
+  height: 100%;
+  width: 225px;
+  transform: translateX(225px);
+  transition: transform 0.5s; }
+  .UserNav .UserNav__items .UserNav__item, .UserNav .UserNav__items .UserNav__label {
+    padding: 5px; }
+    .UserNav .UserNav__items .UserNav__item:first-child, .UserNav .UserNav__items .UserNav__label:first-child {
+      margin-top: 50px; }
+  .UserNav .UserNav__items .UserNav__label {
+    font-weight: bold; }
+  .UserNav .UserNav__items.is-shown {
+    transform: translateX(0); }
+
+.Recipe {
+  padding: 17px; }
+  .Recipe .Recipe__ingredients, .Recipe .Recipe__method {
+    box-sizing: border-box; }
+  .Recipe .Recipe__ingredients {
+    padding-left: 40px; }
+
+.UserNew {
+  padding: 17px; }
+
+.Header {
+  padding: 17px; }
+
+.Footer {
+  padding: 17px; }

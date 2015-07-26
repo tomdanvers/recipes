@@ -1,3 +1,16 @@
 .EditableInput {
+  margin: 0;
   white-space: pre-line;
   width: 100%; }
+  .EditableInput.EditableInput__textarea {
+    border: none;
+    display: block;
+    font-size: 1em;
+    font-family: Helvetica Neue, Helvetica, Arial, Sans-serif;
+    height: 150px; }
+  .EditableInput.EditableInput__ol li {
+    margin-bottom: 5px; }
+    .EditableInput.EditableInput__ol li:last-child {
+      margin-bottom: 0; }
+  .EditableInput.EditableInput__div div {
+    margin-bottom: 5px; }

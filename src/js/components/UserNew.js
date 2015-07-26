@@ -10,7 +10,7 @@ module.exports = React.createClass({
     render: function() {
 
         return (
-            <div>
+            <div className="UserNew">
                 Select a recipe or create a new one...
             </div>
         );

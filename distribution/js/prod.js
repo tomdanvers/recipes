@@ -32384,6 +32384,7 @@ var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
 module.exports = React.createClass({displayName: "exports",
+    divHeight: 0,
     getInitialState: function() {
         return {
             editing: false
@@ -32406,9 +32407,22 @@ module.exports = React.createClass({displayName: "exports",
             editing: true
         });
     },
+    componentWillUpdate: function(){
+        var domNode = React.findDOMNode(this.refs.output);
+        if (domNode) {
+            if (this.props.typeIn === 'textarea') {
+                this.divHeight = domNode.offsetHeight;
+            }
+            domNode.focus();  
+        }
+    },
     componentDidUpdate: function(){
-        if (React.findDOMNode(this.refs.input)) {
-            React.findDOMNode(this.refs.input).focus();  
+        var domNode = React.findDOMNode(this.refs.input);
+        if (domNode) {
+            if (this.props.typeIn === 'textarea' && this.divHeight > 0) {
+                domNode.style.height = Math.max(200, this.divHeight) + 'px';
+            }
+            domNode.focus();  
         }
     },
     render: function() {
@@ -32416,35 +32430,37 @@ module.exports = React.createClass({displayName: "exports",
             switch (this.props.typeIn) {
                 case 'textarea':
                     return (
-                        React.createElement("textarea", {id: this.props.id, value: this.props.value, className: 'EditableInput isEditing ' + this.props.className, ref: "input", onFocus: this.focusHandler, onChange: this.changeHandler, onBlur: this.blurHandler})
+                        React.createElement("textarea", {id: this.props.id, value: this.props.value, className: 'EditableInput EditableInput__textarea isEditing ' + this.props.className, ref: "input", onFocus: this.focusHandler, onChange: this.changeHandler, onBlur: this.blurHandler})
                     );
                     break;
                 default:
                     return (
-                        React.createElement("input", {id: this.props.id, value: this.props.value, className: 'EditableInput isEditing ' + this.props.className, ref: "input", onFocus: this.focusHandler, onChange: this.changeHandler, onBlur: this.blurHandler})
+                        React.createElement("input", {id: this.props.id, value: this.props.value, className: 'EditableInput EditableInput__input isEditing ' + this.props.className, ref: "input", onFocus: this.focusHandler, onChange: this.changeHandler, onBlur: this.blurHandler})
                     );
                     break;
             }
         } else {
+            var items = this.props.value === undefined ? [] : this.props.value.split('\n');
             switch (this.props.typeOut) {
                 case 'ol':
-                    var items = this.props.value === undefined ? [] : this.props.value.split('\n');
                     return (
-                        React.createElement("ol", {id: this.props.id, className: 'EditableInput ' + this.props.className, onClick: this.clickHandler}, 
-                            items.map(function(item) {
-                                return React.createElement("li", {key: item}, item)
-                            })
+                        React.createElement("ol", {id: this.props.id, className: 'EditableInput EditableInput__ol ' + this.props.className, ref: "output", onClick: this.clickHandler}, 
+                            
+                                items.map(function(item, index) {
+                                    return React.createElement("li", {key: index}, item)
+                                })
+                            
                         )
                     );
                     break;
                 case 'h1':
                     return (
-                        React.createElement("h1", {id: this.props.id, className: 'EditableInput ' + this.props.className, onClick: this.clickHandler}, this.props.value)
+                        React.createElement("h1", {id: this.props.id, className: 'EditableInput EditableInput__h1 ' + this.props.className, ref: "output", onClick: this.clickHandler}, this.props.value)
                     );
                     break;
                 default:
                     return (
-                        React.createElement("div", {id: this.props.id, className: 'EditableInput ' + this.props.className, onClick: this.clickHandler}, this.props.value)
+                        React.createElement("div", {id: this.props.id, className: 'EditableInput EditableInput__div ' + this.props.className, ref: "output", onClick: this.clickHandler}, this.props.value)
                     );
                     break;
             }
@@ -32522,7 +32538,7 @@ module.exports = React.createClass({displayName: "exports",
 
         return (
 
-            React.createElement("div", null, 
+            React.createElement("div", {className: "Recipe"}, 
                 React.createElement(EditableInput, {id: "name", typeIn: "input", typeOut: "h1", className: "h1", value: this.props.name, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                 React.createElement("h2", null, "Ingredients"), 
                 React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredients", value: this.props.ingredients, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
@@ -32595,8 +32611,8 @@ module.exports = React.createClass({displayName: "exports",
     observe: function() {
         return {
             recipes: (new Parse.Query('Recipe'))
-                        .equalTo('user', Parse.User.current())
-                        .descending('createdAt')
+                .equalTo('user', Parse.User.current())
+                .descending('createdAt')
         };
     },
     getInitialState: function() {
@@ -32670,13 +32686,11 @@ module.exports = React.createClass({displayName: "exports",
         var user = Parse.User.current();
         var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {name: this.state.name, ingredients: this.state.ingredients, method: this.state.method, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
         return (
-            React.createElement("div", null, 
-                React.createElement("div", null, 
-                    "Hello ", user.get('username'), ", ", this.welcomeMessage()
-                ), 
+            React.createElement("div", {className: "User"}, 
                 React.createElement(UserNav, {recipes: this.data.recipes, onClick: this.navClickHandler}), 
+                React.createElement("h1", {className: "Header"}, "Hello ", user.get('username'), ", ", this.welcomeMessage()), 
                 recipe, 
-                React.createElement("div", null, 
+                React.createElement("div", {className: "Footer"}, 
                     React.createElement("button", {onClick: Parse.User.logOut}, "Log out")
                 )
             )
@@ -32688,7 +32702,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./Recipe":180,"./UserNav":184,"./UserNew":186,"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
+},{"./Recipe":180,"./UserNav":184,"./UserNew":187,"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32714,21 +32728,46 @@ var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
 var UserNavItem = require('./UserNavItem');
+var UserNavLabel = require('./UserNavLabel');
 
     module.exports = React.createClass({displayName: "exports",
+        getInitialState: function() {
+            return {
+                isShown: false
+            };
+        },
+        navHandler: function(event) {
+
+            this.toggleHandler(false);
+
+            this.props.onClick(event);
+
+        },
+        toggleHandler: function(arg) {
+
+            var isShown = typeof(arg) === 'boolean' ? arg : !this.state.isShown;
+
+            this.setState({
+                isShown: isShown
+            });
+        },
         render: function() {
 
             var that = this;
             var navItems = this.props.recipes.map(function(recipe) {
                 return (
-                    React.createElement(UserNavItem, {id: recipe.id, key: recipe.id, label: recipe.name, onClick: that.props.onClick})
+                    React.createElement(UserNavItem, {id: recipe.id, key: recipe.id, label: recipe.name, onClick: that.navHandler})
                 );
             });
 
             return (
-                React.createElement("ul", null, 
-                    navItems, 
-                    React.createElement(UserNavItem, {id: "new", label: "+ New Recipe", onClick: this.props.onClick})
+                React.createElement("div", {className: "UserNav"}, 
+                    React.createElement("ul", {className: "UserNav__items " + (this.state.isShown ? "is-shown" : "")}, 
+                        React.createElement(UserNavLabel, {label: "My Recipes"}), 
+                        navItems, 
+                        React.createElement(UserNavItem, {id: "new", label: "+ New Recipe", onClick: this.navHandler})
+                    ), 
+                    React.createElement("div", {className: "UserNav__toggle", onClick: this.toggleHandler})
                 )
             );
 
@@ -32736,7 +32775,7 @@ var UserNavItem = require('./UserNavItem');
     });
 
 
-},{"./UserNavItem":185,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
+},{"./UserNavItem":185,"./UserNavLabel":186,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32747,12 +32786,25 @@ module.exports = React.createClass({displayName: "exports",
         this.props.onClick(event.target.id);
     },
     render: function() {
-        return React.createElement("li", {id: this.props.id, className: this.props.selected ? 'isSelected':'', onClick: this.clickHandler}, this.props.recipe ? this.props.recipe.name : this.props.label)
+        return React.createElement("li", {id: this.props.id, className: 'UserNav__item ' + (this.props.selected ? 'isSelected' : ''), onClick: this.clickHandler}, this.props.recipe ? this.props.recipe.name : this.props.label)
     }
 });
 
 
 },{"parse":21,"parse-react":2,"react":176}],186:[function(require,module,exports){
+var React = require('react');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+
+
+module.exports = React.createClass({displayName: "exports",
+    render: function() {
+        return React.createElement("li", {className: "UserNav__label"}, this.props.label)
+    }
+});
+
+
+},{"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32765,7 +32817,7 @@ module.exports = React.createClass({displayName: "exports",
     render: function() {
 
         return (
-            React.createElement("div", null, 
+            React.createElement("div", {className: "UserNew"}, 
                 "Select a recipe or create a new one..."
             )
         );
@@ -32774,7 +32826,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],188:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32789,4 +32841,4 @@ React.render(
 );
 
 
-},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[187])
+},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[188])

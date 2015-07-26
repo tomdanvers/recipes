@@ -8,6 +8,6 @@ module.exports = React.createClass({
         this.props.onClick(event.target.id);
     },
     render: function() {
-        return <li id={this.props.id} className={this.props.selected ? 'isSelected':''} onClick={this.clickHandler}>{this.props.recipe ? this.props.recipe.name : this.props.label}</li>
+        return <li id={this.props.id} className={'UserNav__item ' + (this.props.selected ? 'isSelected' : '')} onClick={this.clickHandler}>{this.props.recipe ? this.props.recipe.name : this.props.label}</li>
     }
 });
