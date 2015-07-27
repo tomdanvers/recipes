@@ -53,7 +53,20 @@ h2, .h2 {
   display: block;
   width: 40px;
   height: 40px;
-  background-image: url(/img/nav-toggle.gif); }
+  background-image: url(/img/nav-toggle.gif);
+  background-image: url(/img/nav-toggle.png); }
+
+.UserNav .UserNav__blocker {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.5s; }
 
 .UserNav .UserNav__items {
   background: #EEE;
@@ -73,8 +86,14 @@ h2, .h2 {
       margin-top: 50px; }
   .UserNav .UserNav__items .UserNav__label {
     font-weight: bold; }
-  .UserNav .UserNav__items.is-shown {
-    transform: translateX(0); }
+
+.UserNav.is-shown .UserNav__blocker {
+  opacity: 1;
+  transition: opacity 0.5s; }
+
+.UserNav.is-shown .UserNav__items {
+  transform: translateX(0);
+  transition: transform 0.5s; }
 
 .Recipe {
   padding: 17px; }

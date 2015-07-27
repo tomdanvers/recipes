@@ -36,8 +36,9 @@ var UserNavLabel = require('./UserNavLabel');
             });
 
             return (
-                <div className="UserNav">
-                    <ul className={"UserNav__items " + (this.state.isShown ? "is-shown" : "")}>
+                <div className={"UserNav " + (this.state.isShown ? "is-shown" : "")}>
+                    <div className="UserNav__blocker" onClick={this.toggleHandler}></div>
+                    <ul className={"UserNav__items"}>
                         <UserNavLabel label='My Recipes' />
                         {navItems}
                         <UserNavItem id='new' label='+ New Recipe' onClick={this.navHandler} />

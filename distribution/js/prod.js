@@ -32761,8 +32761,9 @@ var UserNavLabel = require('./UserNavLabel');
             });
 
             return (
-                React.createElement("div", {className: "UserNav"}, 
-                    React.createElement("ul", {className: "UserNav__items " + (this.state.isShown ? "is-shown" : "")}, 
+                React.createElement("div", {className: "UserNav " + (this.state.isShown ? "is-shown" : "")}, 
+                    React.createElement("div", {className: "UserNav__blocker", onClick: this.toggleHandler}), 
+                    React.createElement("ul", {className: "UserNav__items"}, 
                         React.createElement(UserNavLabel, {label: "My Recipes"}), 
                         navItems, 
                         React.createElement(UserNavItem, {id: "new", label: "+ New Recipe", onClick: this.navHandler})
