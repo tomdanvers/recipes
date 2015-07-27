@@ -63,23 +63,23 @@ module.exports = React.createClass({
             switch (this.props.typeOut) {
                 case 'ol':
                     return (
-                        <ol id={this.props.id} className={'EditableInput EditableInput__ol ' + this.props.className} ref="output" onClick={this.clickHandler}>
+                        <ol id={this.props.id} className={'EditableInput EditableInput__ol ' + this.props.className + ' ' + (this.props.highlight === this.props.id ? 'is-highlighted' : '')} ref="output" onClick={this.clickHandler}>
                             {
                                 items.map(function(item, index) {
-                                    return <li key={index}>{item}</li>
-                                })
+                                    return <li key={index} className={this.props.highlight === this.props.id + '-' + index ? 'is-highlighted' : ''}>{item}</li>
+                                }.bind(this))
                             }
                         </ol>
                     );
                     break;
                 case 'h1':
                     return (
-                        <h1 id={this.props.id} className={'EditableInput EditableInput__h1 ' + this.props.className} ref="output" onClick={this.clickHandler}>{this.props.value}</h1>
+                        <h1 id={this.props.id} className={'EditableInput EditableInput__h1 ' + this.props.className + ' ' + (this.props.highlight === this.props.id ? 'is-highlighted' : '')} ref="output" onClick={this.clickHandler}>{this.props.value}</h1>
                     );
                     break;
                 default:
                     return (
-                        <div id={this.props.id} className={'EditableInput EditableInput__div ' + this.props.className} ref="output" onClick={this.clickHandler}>{this.props.value}</div>
+                        <div id={this.props.id} className={'EditableInput EditableInput__div ' + this.props.className + ' ' + (this.props.highlight === this.props.id ? 'is-highlighted' : '')} ref="output" onClick={this.clickHandler}>{this.props.value}</div>
                     );
                     break;
             }

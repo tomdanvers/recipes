@@ -32444,23 +32444,23 @@ module.exports = React.createClass({displayName: "exports",
             switch (this.props.typeOut) {
                 case 'ol':
                     return (
-                        React.createElement("ol", {id: this.props.id, className: 'EditableInput EditableInput__ol ' + this.props.className, ref: "output", onClick: this.clickHandler}, 
+                        React.createElement("ol", {id: this.props.id, className: 'EditableInput EditableInput__ol ' + this.props.className + ' ' + (this.props.highlight === this.props.id ? 'is-highlighted' : ''), ref: "output", onClick: this.clickHandler}, 
                             
                                 items.map(function(item, index) {
-                                    return React.createElement("li", {key: index}, item)
-                                })
+                                    return React.createElement("li", {key: index, className: this.props.highlight === this.props.id + '-' + index ? 'is-highlighted' : ''}, item)
+                                }.bind(this))
                             
                         )
                     );
                     break;
                 case 'h1':
                     return (
-                        React.createElement("h1", {id: this.props.id, className: 'EditableInput EditableInput__h1 ' + this.props.className, ref: "output", onClick: this.clickHandler}, this.props.value)
+                        React.createElement("h1", {id: this.props.id, className: 'EditableInput EditableInput__h1 ' + this.props.className + ' ' + (this.props.highlight === this.props.id ? 'is-highlighted' : ''), ref: "output", onClick: this.clickHandler}, this.props.value)
                     );
                     break;
                 default:
                     return (
-                        React.createElement("div", {id: this.props.id, className: 'EditableInput EditableInput__div ' + this.props.className, ref: "output", onClick: this.clickHandler}, this.props.value)
+                        React.createElement("div", {id: this.props.id, className: 'EditableInput EditableInput__div ' + this.props.className + ' ' + (this.props.highlight === this.props.id ? 'is-highlighted' : ''), ref: "output", onClick: this.clickHandler}, this.props.value)
                     );
                     break;
             }
@@ -32520,6 +32520,12 @@ var ParseReact = require('parse-react');
 var EditableInput = require('./EditableInput');
 
 module.exports = React.createClass({displayName: "exports",
+    getInitialState: function() {
+        return {
+            highlightIndex: false,
+            highlightCount: 0
+        };
+    },
     focusHandler: function(event) {
         this.props.onEditStart(event.target.id);
     },
@@ -32534,16 +32540,97 @@ module.exports = React.createClass({displayName: "exports",
             this.props.onRecipeRemove();
         }
     },
-    render: function() {
+    componentDidMount: function() {
+        window.addEventListener('keydown', this.handleKeyDown);
+    },
+    componentWillUnmount: function() {
+        window.removeEventListener('keydown', this.handleKeyDown);
+    },
+    componentWillReceiveProps: function(nextProps){
+        var highlightCount = 0; 
+        
+        // Ingredients
+        highlightCount ++;
 
+        // Method 
+        highlightCount ++;
+        highlightCount += nextProps.method.split('\n').length;
+
+        if (this.props.id !== nextProps.id) {
+
+            this.setState({
+                highlightIndex: false,
+                highlightCount: highlightCount
+            });
+
+        } else {
+
+            this.setState({
+                highlightCount: highlightCount
+            });
+            
+        }
+        
+    },
+    handleKeyDown: function(event) {
+        
+        if (this.props.editing) {
+            return;  
+        } else {
+            event.preventDefault();
+        }
+
+        var index;
+        
+        if (typeof(this.state.highlightIndex) === 'boolean') {
+            index = 0;
+        } else {
+            index = this.state.highlightIndex;
+            
+            switch (event.keyCode) {
+                case 38:
+                    index --;
+                    break;
+                case 40:
+                    index ++;
+                    break;
+            }
+
+            if (index < 0) {
+                index = this.state.highlightCount - 1;
+            } else if(index >= this.state.highlightCount) {
+                index = 0;
+            }
+
+        }
+        
+        if (this.state.highlightIndex !== index) {
+            this.setState({highlightIndex:index});
+        }
+        
+
+    },
+    render: function() {
+        
+        var highlights = [];
+        highlights.push('ingredients');
+        highlights.push('method');
+
+        var methodItems = this.props.method.split('\n');
+        methodItems.map(function(item, index) {
+            highlights.push('method-'+index);
+        });
+
+        var highlight = this.state.highlightIndex === false ? null : highlights[this.state.highlightIndex];
+        
         return (
 
             React.createElement("div", {className: "Recipe"}, 
-                React.createElement(EditableInput, {id: "name", typeIn: "input", typeOut: "h1", className: "h1", value: this.props.name, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                React.createElement(EditableInput, {id: "name", typeIn: "input", typeOut: "h1", className: "h1", value: this.props.name, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                 React.createElement("h2", null, "Ingredients"), 
-                React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredients", value: this.props.ingredients, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredients", value: this.props.ingredients, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                 React.createElement("h2", null, "Method"), 
-                React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__method", value: this.props.method, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__method", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                 React.createElement("button", {onClick: this.removeHandler}, "Remove Recipe")
             )
 
@@ -32617,7 +32704,8 @@ module.exports = React.createClass({displayName: "exports",
     },
     getInitialState: function() {
         return {
-            selectedRecipe: null
+            selectedRecipe: null,
+            editing: false
         };
     },
     navClickHandler: function(id) {
@@ -32645,7 +32733,8 @@ module.exports = React.createClass({displayName: "exports",
             selectedRecipe: recipe,
             name: recipe.name,
             ingredients: recipe.ingredients,
-            method: recipe.method
+            method: recipe.method,
+            editing: false
         });
     },
     getRecipeById: function(id) {
@@ -32656,6 +32745,9 @@ module.exports = React.createClass({displayName: "exports",
         }
     },
     editStartHandler: function(type) {
+        this.setState({
+            editing: true
+        });
     },
     editUpdateHandler: function(type, value) {
         
@@ -32673,6 +32765,10 @@ module.exports = React.createClass({displayName: "exports",
         ParseReact.Mutation.Set(this.state.selectedRecipe, changed)
             .dispatch();
 
+        this.setState({
+            editing: false
+        });
+
     },
     recipeRemoveHandler: function() {
         ParseReact.Mutation.Destroy(this.state.selectedRecipe)
@@ -32683,8 +32779,10 @@ module.exports = React.createClass({displayName: "exports",
             }.bind(this));
     },
     render: function() {
+        console.log('this.state.editing', this.state.editing);
+
         var user = Parse.User.current();
-        var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {name: this.state.name, ingredients: this.state.ingredients, method: this.state.method, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
+        var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {id: this.state.selectedRecipe.objectId, name: this.state.name, ingredients: this.state.ingredients, method: this.state.method, editing: this.state.editing, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
         return (
             React.createElement("div", {className: "User"}, 
                 React.createElement(UserNav, {recipes: this.data.recipes, onClick: this.navClickHandler}), 

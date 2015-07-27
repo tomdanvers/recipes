@@ -18,7 +18,8 @@ module.exports = React.createClass({
     },
     getInitialState: function() {
         return {
-            selectedRecipe: null
+            selectedRecipe: null,
+            editing: false
         };
     },
     navClickHandler: function(id) {
@@ -46,7 +47,8 @@ module.exports = React.createClass({
             selectedRecipe: recipe,
             name: recipe.name,
             ingredients: recipe.ingredients,
-            method: recipe.method
+            method: recipe.method,
+            editing: false
         });
     },
     getRecipeById: function(id) {
@@ -57,6 +59,9 @@ module.exports = React.createClass({
         }
     },
     editStartHandler: function(type) {
+        this.setState({
+            editing: true
+        });
     },
     editUpdateHandler: function(type, value) {
         
@@ -74,6 +79,10 @@ module.exports = React.createClass({
         ParseReact.Mutation.Set(this.state.selectedRecipe, changed)
             .dispatch();
 
+        this.setState({
+            editing: false
+        });
+
     },
     recipeRemoveHandler: function() {
         ParseReact.Mutation.Destroy(this.state.selectedRecipe)
@@ -84,8 +93,10 @@ module.exports = React.createClass({
             }.bind(this));
     },
     render: function() {
+        console.log('this.state.editing', this.state.editing);
+
         var user = Parse.User.current();
-        var recipe = this.state.selectedRecipe ? (<Recipe name={this.state.name} ingredients={this.state.ingredients} method={this.state.method} onEditStart={this.editStartHandler} onEditUpdate={this.editUpdateHandler} onEditStop={this.editStopHandler} onRecipeRemove={this.recipeRemoveHandler}/>) : <UserNew/>;
+        var recipe = this.state.selectedRecipe ? (<Recipe id={this.state.selectedRecipe.objectId} name={this.state.name} ingredients={this.state.ingredients} method={this.state.method} editing={this.state.editing} onEditStart={this.editStartHandler} onEditUpdate={this.editUpdateHandler} onEditStop={this.editStopHandler} onRecipeRemove={this.recipeRemoveHandler}/>) : <UserNew/>;
         return (
             <div className="User">
                 <UserNav recipes={this.data.recipes} onClick={this.navClickHandler}/>

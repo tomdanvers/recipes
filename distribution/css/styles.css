@@ -66,7 +66,8 @@ h2, .h2 {
   display: block;
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
-  transition: opacity 0.5s; }
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s; }
 
 .UserNav .UserNav__items {
   background: #EEE;
@@ -89,7 +90,8 @@ h2, .h2 {
 
 .UserNav.is-shown .UserNav__blocker {
   opacity: 1;
-  transition: opacity 0.5s; }
+  visibility: visible;
+  transition: opacity 0.5s, visibility 0.5s; }
 
 .UserNav.is-shown .UserNav__items {
   transform: translateX(0);
@@ -101,6 +103,8 @@ h2, .h2 {
     box-sizing: border-box; }
   .Recipe .Recipe__ingredients {
     padding-left: 40px; }
+  .Recipe .is-highlighted {
+    background-color: rgba(255, 255, 0, 0.2); }
 
 .UserNew {
   padding: 17px; }
