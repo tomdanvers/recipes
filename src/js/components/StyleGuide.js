@@ -7,11 +7,13 @@ var Signup = require('./Signup');
 var EditableInput = require('./EditableInput');
 var UserNavItem = require('./UserNavItem');
 var UserNavLabel = require('./UserNavLabel');
+var VoiceControl = require('./VoiceControl');
 
 module.exports = React.createClass({
     render: function() {
         return (
             <div className="StyleGuide">
+                <VoiceControl />
                 <div className="StyleGuide__item">
                     <h1 className="StyleGuide__label">EditableInput</h1>
                     <EditableInput id="editable" typeIn="textarea" typeOut="ol" className="Recipe__method" value={"Hello\nWorld!"} highlight={"editable-0"} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />

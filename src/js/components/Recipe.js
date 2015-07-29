@@ -4,27 +4,20 @@ var ParseReact = require('parse-react');
 
 var EditableInput = require('./EditableInput');
 
-var VoiceControl = require('../utils/VoiceControl');
+var VoiceControl = require('./VoiceControl');
 
 module.exports = React.createClass({
     getInitialState: function() {
         return {
             highlightIndex: false,
-            highlightCount: 0,
-            voiceControl: false
+            highlightCount: 0
         };
     },
     focusHandler: function(event) {
         this.props.onEditStart(event.target.id);
     },
     changeHandler: function(event) {
-        if (event.target.id === 'voice-control') {
-            this.setState({
-                voiceControl: !this.state.voiceControl
-            });
-        } else {
-            this.props.onEditUpdate(event.target.id, event.target.value);
-        }
+        this.props.onEditUpdate(event.target.id, event.target.value);
     },
     blurHandler: function(event) {
         this.props.onEditStop(event.target.id);
@@ -34,20 +27,8 @@ module.exports = React.createClass({
             this.props.onRecipeRemove();
         }
     },
-    componentDidMount: function() {
-        window.addEventListener('keydown', this.handleKeyDown);
-
-        this.voiceControl = new VoiceControl({
-            hello : function() {
-                console.log('USER SAID HELLO WORLD');
-            }
-        });
-
-    },
     componentWillUnmount: function() {
         window.removeEventListener('keydown', this.handleKeyDown);
-
-        this.voiceControl.destroy();
     },
     componentWillReceiveProps: function(nextProps){
 
@@ -75,15 +56,6 @@ module.exports = React.createClass({
             
         }
     
-    },
-    componentWillUpdate: function(nextProps, nextState) {
-        if(this.voiceControl) {
-            if(nextState.voiceControl) {
-                this.voiceControl.start();
-            } else {
-                this.voiceControl.stop();
-            }
-        }
     },
     handleKeyDown: function(event) {
         
@@ -147,7 +119,7 @@ module.exports = React.createClass({
                 <EditableInput id="ingredients" typeIn="textarea" typeOut="div" className="Recipe__ingredients" value={this.props.ingredients} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
                 <h2>Method</h2>
                 <EditableInput id="method" typeIn="textarea" typeOut="ol" className="Recipe__method" value={this.props.method} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
-                <input id="voice-control" type="checkbox" checked={this.state.voiceControl} onChange={this.changeHandler} />
+                <VoiceControl />
                 <button onClick={this.removeHandler}>Remove Recipe</button>
             </div>
 

@@ -155,6 +155,15 @@ button, .button {
   .Recipe .Recipe__ingredients {
     padding-left: 40px; }
 
+.VoiceControl {
+  position: fixed;
+  bottom: 0;
+  transform: translateY(100px);
+  transition: transform 1s; }
+  .VoiceControl.is-available {
+    transform: translateY(0);
+    transition: transform 1s; }
+
 .StyleGuide .StyleGuide__item {
   background-color: #EEE;
   border-radius: 4px;

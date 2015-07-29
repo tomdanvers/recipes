@@ -1,0 +1,11 @@
+.VoiceControl {
+	position: fixed;
+	bottom: 0;
+	transform: translateY(100px);
+	transition: transform 1s;
+
+	&.is-available {
+		transform: translateY(0);
+		transition: transform 1s;
+	}
+}
