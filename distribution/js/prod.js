@@ -32372,7 +32372,7 @@ module.exports = React.createClass({displayName: "exports",
         }
 
         // DEBUG - START
-        component = React.createElement(StyleGuide, null)
+        // component = <StyleGuide />
         // DEBUG - END
         return (
             React.createElement("div", null, 
