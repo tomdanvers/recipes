@@ -1,11 +1,40 @@
 .VoiceControl {
 	position: fixed;
 	bottom: 0;
+	width: 100%;
 	transform: translateY(100px);
 	transition: transform 1s;
+	text-align: center;
+
+	.VoiceControl__panel {
+		display: inline-block;
+		width: 250px;
+		background-color: grey;
+		border-radius: 8px 8px 0 0;
+		.VoiceControl__check {
+			height: 32px;
+		}
+		.VoiceControl__result {
+			height: 32px;
+		}
+	}
 
 	&.is-available {
+		transform: translateY(32px);
+		transition: transform 1s;
+	}
+
+	&.is-enabled {
 		transform: translateY(0);
 		transition: transform 1s;
+		.VoiceControl__panel {
+			background-color: green;
+		}
+	}
+
+	&.is-error {
+		.VoiceControl__panel {
+			background-color: red;
+		}
 	}
 }

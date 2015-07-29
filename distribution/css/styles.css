@@ -158,11 +158,29 @@ button, .button {
 .VoiceControl {
   position: fixed;
   bottom: 0;
+  width: 100%;
   transform: translateY(100px);
-  transition: transform 1s; }
+  transition: transform 1s;
+  text-align: center; }
+  .VoiceControl .VoiceControl__panel {
+    display: inline-block;
+    width: 250px;
+    background-color: grey;
+    border-radius: 8px 8px 0 0; }
+    .VoiceControl .VoiceControl__panel .VoiceControl__check {
+      height: 32px; }
+    .VoiceControl .VoiceControl__panel .VoiceControl__result {
+      height: 32px; }
   .VoiceControl.is-available {
+    transform: translateY(32px);
+    transition: transform 1s; }
+  .VoiceControl.is-enabled {
     transform: translateY(0);
     transition: transform 1s; }
+    .VoiceControl.is-enabled .VoiceControl__panel {
+      background-color: green; }
+  .VoiceControl.is-error .VoiceControl__panel {
+    background-color: red; }
 
 .StyleGuide .StyleGuide__item {
   background-color: #EEE;
