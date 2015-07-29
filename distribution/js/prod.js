@@ -32542,18 +32542,27 @@ var ParseReact = require('parse-react');
 
 var EditableInput = require('./EditableInput');
 
+var VoiceControl = require('../utils/VoiceControl');
+
 module.exports = React.createClass({displayName: "exports",
     getInitialState: function() {
         return {
             highlightIndex: false,
-            highlightCount: 0
+            highlightCount: 0,
+            voiceControl: false
         };
     },
     focusHandler: function(event) {
         this.props.onEditStart(event.target.id);
     },
     changeHandler: function(event) {
-        this.props.onEditUpdate(event.target.id, event.target.value);
+        if (event.target.id === 'voice-control') {
+            this.setState({
+                voiceControl: !this.state.voiceControl
+            });
+        } else {
+            this.props.onEditUpdate(event.target.id, event.target.value);
+        }
     },
     blurHandler: function(event) {
         this.props.onEditStop(event.target.id);
@@ -32565,9 +32574,18 @@ module.exports = React.createClass({displayName: "exports",
     },
     componentDidMount: function() {
         window.addEventListener('keydown', this.handleKeyDown);
+
+        this.voiceControl = new VoiceControl({
+            hello : function() {
+                console.log('USER SAID HELLO WORLD');
+            }
+        });
+
     },
     componentWillUnmount: function() {
         window.removeEventListener('keydown', this.handleKeyDown);
+
+        this.voiceControl.destroy();
     },
     componentWillReceiveProps: function(nextProps){
 
@@ -32594,44 +32612,56 @@ module.exports = React.createClass({displayName: "exports",
             });
             
         }
-        
+    
+    },
+    componentWillUpdate: function(nextProps, nextState) {
+        if(this.voiceControl) {
+            if(nextState.voiceControl) {
+                this.voiceControl.start();
+            } else {
+                this.voiceControl.stop();
+            }
+        }
     },
     handleKeyDown: function(event) {
         
         if (this.props.editing) {
-            return;  
-        } else {
-            event.preventDefault();
-        }
-
-        var index;
-        
-        if (typeof(this.state.highlightIndex) === 'boolean') {
-            index = 0;
-        } else {
-            index = this.state.highlightIndex;
             
-            switch (event.keyCode) {
-                case 38:
-                    index --;
-                    break;
-                case 40:
-                    index ++;
-                    break;
-            }
+            return;  
 
-            if (index < 0) {
-                index = this.state.highlightCount - 1;
-            } else if(index >= this.state.highlightCount) {
+        } else if (event.keyCode === 38 || event.keyCode === 40) { 
+            
+            event.preventDefault();
+
+            var index;
+            
+            if (typeof(this.state.highlightIndex) === 'boolean') {
                 index = 0;
+            } else {
+                index = this.state.highlightIndex;
+                
+                switch (event.keyCode) {
+                    case 38:
+                        index --;
+                        break;
+                    case 40:
+                        index ++;
+                        break;
+                }
+
+                if (index < 0) {
+                    index = this.state.highlightCount - 1;
+                } else if(index >= this.state.highlightCount) {
+                    index = 0;
+                }
+
+            }
+            
+            if (this.state.highlightIndex !== index) {
+                this.setState({highlightIndex:index});
             }
 
         }
-        
-        if (this.state.highlightIndex !== index) {
-            this.setState({highlightIndex:index});
-        }
-        
 
     },
     render: function() {
@@ -32646,7 +32676,7 @@ module.exports = React.createClass({displayName: "exports",
         });
 
         var highlight = this.state.highlightIndex === false ? null : highlights[this.state.highlightIndex];
-        console.log(highlight)
+        
         return (
 
             React.createElement("div", {className: "Recipe"}, 
@@ -32655,6 +32685,7 @@ module.exports = React.createClass({displayName: "exports",
                 React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredients", value: this.props.ingredients, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                 React.createElement("h2", null, "Method"), 
                 React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__method", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                React.createElement("input", {id: "voice-control", type: "checkbox", checked: this.state.voiceControl, onChange: this.changeHandler}), 
                 React.createElement("button", {onClick: this.removeHandler}, "Remove Recipe")
             )
 
@@ -32664,7 +32695,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./EditableInput":178,"parse":21,"parse-react":2,"react":176}],182:[function(require,module,exports){
+},{"../utils/VoiceControl":191,"./EditableInput":178,"parse":21,"parse-react":2,"react":176}],182:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -33007,4 +33038,83 @@ React.render(
 );
 
 
-},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[190])
+},{"./components/App":177,"parse":21,"parse-react":2,"react":176}],191:[function(require,module,exports){
+module.exports = function() {
+	var api = {
+		start: start,
+		stop: stop,
+		destroy: destroy
+	};
+
+	var recognition = null;
+
+	function init() {
+
+		if ('webkitSpeechRecognition' in window) {
+
+			recognition = new webkitSpeechRecognition();
+			recognition.continuous = true;
+			recognition.interimResults = false;
+			recognition.lang = 'en-US';
+
+			recognition.onstart = function() {
+				recognizing = true;
+			};
+
+			recognition.onerror = function(event) {
+				console.log(event.error);
+			};
+
+			recognition.onend = function() {
+				recognizing = false;
+			};
+
+			recognition.onresult = function(event) {
+				// var interim_transcript = '';
+				// for (var i = event.resultIndex; i < event.results.length; ++i) {
+				// 	if (event.results[i].isFinal) {
+				// 		final_transcript += event.results[i][0].transcript;
+				// 	} else {
+				// 		interim_transcript += event.results[i][0].transcript;
+				// 	}
+				// }
+				// final_transcript = capitalize(final_transcript);
+				// final_span.innerHTML = linebreak(final_transcript);
+				// interim_span.innerHTML = linebreak(interim_transcript);
+
+				// };
+				console.log(event);
+			};
+
+		}
+
+	}
+
+	function start() {
+
+		if (!recognition) {
+			init();
+		}
+
+		recognition.start();
+		
+	}
+
+	function stop() {
+
+		if (recognition) {
+			recognition.stop();
+		}
+
+	}
+
+	function destroy() {
+	
+		stop();
+		
+	}
+
+	return api;
+}
+
+},{}]},{},[190])
