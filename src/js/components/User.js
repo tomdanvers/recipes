@@ -93,8 +93,6 @@ module.exports = React.createClass({
             }.bind(this));
     },
     render: function() {
-        console.log('this.state.editing', this.state.editing);
-
         var user = Parse.User.current();
         var recipe = this.state.selectedRecipe ? (<Recipe id={this.state.selectedRecipe.objectId} name={this.state.name} ingredients={this.state.ingredients} method={this.state.method} editing={this.state.editing} onEditStart={this.editStartHandler} onEditUpdate={this.editUpdateHandler} onEditStop={this.editStopHandler} onRecipeRemove={this.recipeRemoveHandler}/>) : <UserNew/>;
         return (

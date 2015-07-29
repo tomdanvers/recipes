@@ -32,6 +32,7 @@ module.exports = React.createClass({
         window.removeEventListener('keydown', this.handleKeyDown);
     },
     componentWillReceiveProps: function(nextProps){
+
         var highlightCount = 0; 
         
         // Ingredients
@@ -107,7 +108,7 @@ module.exports = React.createClass({
         });
 
         var highlight = this.state.highlightIndex === false ? null : highlights[this.state.highlightIndex];
-        
+        console.log(highlight)
         return (
 
             <div className="Recipe">

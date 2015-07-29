@@ -30,7 +30,7 @@ module.exports = React.createClass({
         // component = <StyleGuide />
         // DEBUG - END
         return (
-            <div>
+            <div className="App">
                 {component}
             </div>
         );

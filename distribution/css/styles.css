@@ -44,6 +44,12 @@ input {
   font-size: .75em;
   color: #DD0000; }
 
+.panel {
+  background-color: #EEE;
+  border-radius: 4px;
+  padding: 16px;
+  margin: 16px; }
+
 button, .button {
   width: 100%;
   background-color: #BBB;
@@ -62,6 +68,10 @@ button, .button {
     background-color: #DDD; }
 
 /* Component Imports */
+.App {
+  max-width: 1000px;
+  margin: 0 auto; }
+
 .EditableInput {
   margin: 0;
   white-space: pre-line;
@@ -78,9 +88,10 @@ button, .button {
       margin-bottom: 0; }
   .EditableInput.EditableInput__div div {
     margin-bottom: 8px; }
-  .EditableInput .is-highlighted {
-    background-color: rgba(255, 255, 0, 0.2);
-    font-size: 1.5em; }
+
+.is-highlighted {
+  background-color: rgba(255, 255, 0, 0.2);
+  font-size: 1.5em; }
 
 .UserNav .UserNav__toggle {
   position: fixed;

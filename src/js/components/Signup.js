@@ -27,7 +27,7 @@ module.exports = React.createClass({
     },
     render: function() {
         return (
-            <form onSubmit={this.submitHandler}>
+            <form onSubmit={this.submitHandler} className="panel">
                 <h1>Sign Up</h1>
                 <p>Choose a username and password.</p>
                 <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />

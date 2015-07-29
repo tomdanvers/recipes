@@ -2,17 +2,12 @@ var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
-var Intro = require('./Intro');
-var Login = require('./Login');
-var Signup = require('./Signup');
-
 module.exports = React.createClass({
     render: function() {
         return (
-            <div>
-            	<Intro />
-                <Login />
-                <Signup />
+            <div className="panel">
+                <h1>Welcome!</h1>
+                <p>Log in or sign up to get cooking.</p>
             </div>
         );
     }

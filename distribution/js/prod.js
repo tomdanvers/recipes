@@ -32375,7 +32375,7 @@ module.exports = React.createClass({displayName: "exports",
         // component = <StyleGuide />
         // DEBUG - END
         return (
-            React.createElement("div", null, 
+            React.createElement("div", {className: "App"}, 
                 component
             )
         );
@@ -32383,7 +32383,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./StyleGuide":182,"./User":183,"./UserAuthentication":184,"parse":21,"parse-react":2,"react":176}],178:[function(require,module,exports){
+},{"./StyleGuide":183,"./User":184,"./UserAuthentication":185,"parse":21,"parse-react":2,"react":176}],178:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32480,6 +32480,23 @@ var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
 module.exports = React.createClass({displayName: "exports",
+    render: function() {
+        return (
+            React.createElement("div", {className: "panel"}, 
+                React.createElement("h1", null, "Welcome!"), 
+                React.createElement("p", null, "Log in or sign up to get cooking.")
+            )
+        );
+    }
+});
+
+
+},{"parse":21,"parse-react":2,"react":176}],180:[function(require,module,exports){
+var React = require('react');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+
+module.exports = React.createClass({displayName: "exports",
     getInitialState: function() {
         return {};
     },
@@ -32505,7 +32522,7 @@ module.exports = React.createClass({displayName: "exports",
     render: function() {
         var error = this.state.code === undefined ? null : (React.createElement("div", {className: "Form__error"}, this.state.code, " ", this.state.message));
         return (
-            React.createElement("form", {onSubmit: this.submitHandler}, 
+            React.createElement("form", {onSubmit: this.submitHandler, className: "panel"}, 
                 React.createElement("h1", null, "Log In"), 
                 React.createElement("p", null, "Enter your username and password."), 
                 React.createElement("input", {type: "text", placeholder: "Username", onChange: this.changeUsernameHandler}), 
@@ -32518,7 +32535,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],180:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],181:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32553,6 +32570,7 @@ module.exports = React.createClass({displayName: "exports",
         window.removeEventListener('keydown', this.handleKeyDown);
     },
     componentWillReceiveProps: function(nextProps){
+
         var highlightCount = 0; 
         
         // Ingredients
@@ -32628,7 +32646,7 @@ module.exports = React.createClass({displayName: "exports",
         });
 
         var highlight = this.state.highlightIndex === false ? null : highlights[this.state.highlightIndex];
-        
+        console.log(highlight)
         return (
 
             React.createElement("div", {className: "Recipe"}, 
@@ -32646,7 +32664,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./EditableInput":178,"parse":21,"parse-react":2,"react":176}],181:[function(require,module,exports){
+},{"./EditableInput":178,"parse":21,"parse-react":2,"react":176}],182:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32676,7 +32694,7 @@ module.exports = React.createClass({displayName: "exports",
     },
     render: function() {
         return (
-            React.createElement("form", {onSubmit: this.submitHandler}, 
+            React.createElement("form", {onSubmit: this.submitHandler, className: "panel"}, 
                 React.createElement("h1", null, "Sign Up"), 
                 React.createElement("p", null, "Choose a username and password."), 
                 React.createElement("input", {type: "text", placeholder: "Username", onChange: this.changeUsernameHandler}), 
@@ -32689,7 +32707,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],182:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32731,7 +32749,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./EditableInput":178,"./Login":179,"./Signup":181,"./UserNavItem":186,"./UserNavLabel":187,"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
+},{"./EditableInput":178,"./Login":180,"./Signup":182,"./UserNavItem":187,"./UserNavLabel":188,"parse":21,"parse-react":2,"react":176}],184:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32827,8 +32845,6 @@ module.exports = React.createClass({displayName: "exports",
             }.bind(this));
     },
     render: function() {
-        console.log('this.state.editing', this.state.editing);
-
         var user = Parse.User.current();
         var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {id: this.state.selectedRecipe.objectId, name: this.state.name, ingredients: this.state.ingredients, method: this.state.method, editing: this.state.editing, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
         return (
@@ -32848,11 +32864,12 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./Recipe":180,"./UserNav":185,"./UserNew":188,"parse":21,"parse-react":2,"react":176}],184:[function(require,module,exports){
+},{"./Recipe":181,"./UserNav":186,"./UserNew":189,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
+var Intro = require('./Intro');
 var Login = require('./Login');
 var Signup = require('./Signup');
 
@@ -32860,6 +32877,7 @@ module.exports = React.createClass({displayName: "exports",
     render: function() {
         return (
             React.createElement("div", null, 
+            	React.createElement(Intro, null), 
                 React.createElement(Login, null), 
                 React.createElement(Signup, null)
             )
@@ -32868,7 +32886,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./Login":179,"./Signup":181,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
+},{"./Intro":179,"./Login":180,"./Signup":182,"parse":21,"parse-react":2,"react":176}],186:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32922,7 +32940,7 @@ var UserNavLabel = require('./UserNavLabel');
     });
 
 
-},{"./UserNavItem":186,"./UserNavLabel":187,"parse":21,"parse-react":2,"react":176}],186:[function(require,module,exports){
+},{"./UserNavItem":187,"./UserNavLabel":188,"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32938,7 +32956,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],188:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32951,7 +32969,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],188:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],189:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32973,7 +32991,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],189:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],190:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32989,4 +33007,4 @@ React.render(
 );
 
 
-},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[189])
+},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[190])

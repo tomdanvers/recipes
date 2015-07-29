@@ -28,7 +28,7 @@ module.exports = React.createClass({
     render: function() {
         var error = this.state.code === undefined ? null : (<div className="Form__error">{this.state.code} {this.state.message}</div>);
         return (
-            <form onSubmit={this.submitHandler}>
+            <form onSubmit={this.submitHandler} className="panel">
                 <h1>Log In</h1>
                 <p>Enter your username and password.</p>
                 <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
