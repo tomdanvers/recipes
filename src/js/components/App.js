@@ -4,6 +4,7 @@ var ParseReact = require('parse-react');
 
 var UserAuthentication = require('./UserAuthentication');
 var User = require('./User');
+var StyleGuide = require('./StyleGuide');
 
 module.exports = React.createClass({
     mixins: [ParseReact.Mixin],
@@ -24,6 +25,10 @@ module.exports = React.createClass({
         } else {
             component = <UserAuthentication />;
         }
+
+        // DEBUG - START
+        component = <StyleGuide />
+        // DEBUG - END
         return (
             <div>
                 {component}

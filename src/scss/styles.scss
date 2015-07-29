@@ -9,6 +9,8 @@
 @import "_base/variables";
 @import "_base/global";
 @import "_base/typography";
+@import "_base/form";
+@import "_base/button";
 
 
 /* Component Imports */
@@ -16,4 +18,5 @@
 @import "_components/UserNav";
 @import "_components/Recipe";
 
+@import "_components/StyleGuide";
 @import "_components/Temp";

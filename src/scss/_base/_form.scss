@@ -1,0 +1,21 @@
+input {
+	width: 100%;
+	box-sizing: border-box;
+	font-size: 1em;
+	margin-bottom: 8px;
+	padding: 8px;
+
+	&:focus {
+		outline: 1px solid #CCC;
+	}
+
+	&.is-invalid {
+		color: #DD0000;
+	}
+}
+
+.Form__error {
+	padding: 16px 0;
+	font-size: .75em;
+	color: #DD0000;
+}

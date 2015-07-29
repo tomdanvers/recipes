@@ -9,8 +9,11 @@
     font-family: Helvetica Neue, Helvetica, Arial, Sans-serif;
     height: 150px; }
   .EditableInput.EditableInput__ol li {
-    margin-bottom: 5px; }
+    margin-bottom: 8px; }
     .EditableInput.EditableInput__ol li:last-child {
       margin-bottom: 0; }
   .EditableInput.EditableInput__div div {
-    margin-bottom: 5px; }
+    margin-bottom: 8px; }
+  .EditableInput .is-highlighted {
+    background-color: rgba(255, 255, 0, 0.2);
+    font-size: 1.5em; }

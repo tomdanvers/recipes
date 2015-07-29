@@ -32349,6 +32349,7 @@ var ParseReact = require('parse-react');
 
 var UserAuthentication = require('./UserAuthentication');
 var User = require('./User');
+var StyleGuide = require('./StyleGuide');
 
 module.exports = React.createClass({displayName: "exports",
     mixins: [ParseReact.Mixin],
@@ -32369,6 +32370,10 @@ module.exports = React.createClass({displayName: "exports",
         } else {
             component = React.createElement(UserAuthentication, null);
         }
+
+        // DEBUG - START
+        component = React.createElement(StyleGuide, null)
+        // DEBUG - END
         return (
             React.createElement("div", null, 
                 component
@@ -32378,7 +32383,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./User":182,"./UserAuthentication":183,"parse":21,"parse-react":2,"react":176}],178:[function(require,module,exports){
+},{"./StyleGuide":182,"./User":183,"./UserAuthentication":184,"parse":21,"parse-react":2,"react":176}],178:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32498,6 +32503,7 @@ module.exports = React.createClass({displayName: "exports",
         this.setState({password: event.target.value});
     },
     render: function() {
+        var error = this.state.code === undefined ? null : (React.createElement("div", {className: "Form__error"}, this.state.code, " ", this.state.message));
         return (
             React.createElement("form", {onSubmit: this.submitHandler}, 
                 React.createElement("h1", null, "Log In"), 
@@ -32505,7 +32511,7 @@ module.exports = React.createClass({displayName: "exports",
                 React.createElement("input", {type: "text", placeholder: "Username", onChange: this.changeUsernameHandler}), 
                 React.createElement("input", {type: "password", placeholder: "Password", onChange: this.changePasswordHandler}), 
                 React.createElement("button", null, "Log In"), 
-                React.createElement("div", null, this.state.code, " ", this.state.message)
+                error
             )
         );
     }
@@ -32688,6 +32694,48 @@ var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
+var Login = require('./Login');
+var Signup = require('./Signup');
+var EditableInput = require('./EditableInput');
+var UserNavItem = require('./UserNavItem');
+var UserNavLabel = require('./UserNavLabel');
+
+module.exports = React.createClass({displayName: "exports",
+    render: function() {
+        return (
+            React.createElement("div", {className: "StyleGuide"}, 
+                React.createElement("div", {className: "StyleGuide__item"}, 
+                    React.createElement("h1", {className: "StyleGuide__label"}, "EditableInput"), 
+                    React.createElement(EditableInput, {id: "editable", typeIn: "textarea", typeOut: "ol", className: "Recipe__method", value: "Hello\nWorld!", highlight: "editable-0", onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
+                ), 
+                React.createElement("div", {className: "StyleGuide__item"}, 
+                    React.createElement("h1", {className: "StyleGuide__label"}, "UserNavItem"), 
+                    React.createElement(UserNavLabel, {id: "user-nav-label", label: "User Nav Label"}), 
+                    React.createElement(UserNavItem, {id: "user-nav-item", label: "User Nav Item"})
+                ), 
+                React.createElement("div", {className: "StyleGuide__item"}, 
+                    React.createElement("h1", {className: "StyleGuide__label"}, "Login"), 
+                    React.createElement(Login, null)
+                ), 
+                React.createElement("div", {className: "StyleGuide__item"}, 
+                    React.createElement("h1", {className: "StyleGuide__label"}, "Signup"), 
+                    React.createElement(Signup, null)
+                ), 
+                React.createElement("div", {className: "StyleGuide__item"}, 
+                    React.createElement("h1", {className: "StyleGuide__label"}, "Button"), 
+                    React.createElement("button", null, "Button")
+                )
+            )
+        );
+    }
+});
+
+
+},{"./EditableInput":178,"./Login":179,"./Signup":181,"./UserNavItem":186,"./UserNavLabel":187,"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
+var React = require('react');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+
 var UserNav = require('./UserNav');
 var UserNew = require('./UserNew');
 var Recipe = require('./Recipe');
@@ -32800,7 +32848,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./Recipe":180,"./UserNav":184,"./UserNew":187,"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
+},{"./Recipe":180,"./UserNav":185,"./UserNew":188,"parse":21,"parse-react":2,"react":176}],184:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32820,7 +32868,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./Login":179,"./Signup":181,"parse":21,"parse-react":2,"react":176}],184:[function(require,module,exports){
+},{"./Login":179,"./Signup":181,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32874,7 +32922,7 @@ var UserNavLabel = require('./UserNavLabel');
     });
 
 
-},{"./UserNavItem":185,"./UserNavLabel":186,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
+},{"./UserNavItem":186,"./UserNavLabel":187,"parse":21,"parse-react":2,"react":176}],186:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32890,7 +32938,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],186:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32903,7 +32951,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],188:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32925,12 +32973,13 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],188:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],189:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
 var App = require('./components/App');
+
 
 Parse.initialize('hKc4I2i2tMsfs7pn5ZXHKbI5vqB7vk0jiDhvuMsP', 'bfwNgeIg1riBr7ogEq8Rql8IUsTUUGRNwD79PIQm');
 
@@ -32940,4 +32989,4 @@ React.render(
 );
 
 
-},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[188])
+},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[189])

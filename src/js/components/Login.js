@@ -26,6 +26,7 @@ module.exports = React.createClass({
         this.setState({password: event.target.value});
     },
     render: function() {
+        var error = this.state.code === undefined ? null : (<div className="Form__error">{this.state.code} {this.state.message}</div>);
         return (
             <form onSubmit={this.submitHandler}>
                 <h1>Log In</h1>
@@ -33,7 +34,7 @@ module.exports = React.createClass({
                 <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
                 <input type="password" placeholder="Password" onChange={this.changePasswordHandler} />
                 <button>Log In</button>
-                <div>{this.state.code} {this.state.message}</div>
+                {error}
             </form>
         );
     }

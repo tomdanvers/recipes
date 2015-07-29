@@ -4,5 +4,3 @@
     box-sizing: border-box; }
   .Recipe .Recipe__ingredients {
     padding-left: 40px; }
-  .Recipe .is-highlighted {
-    background-color: rgba(255, 255, 0, 0.2); }

@@ -1,0 +1,13 @@
+.StyleGuide {
+	.StyleGuide__item {
+		.StyleGuide__label {
+			font-style: italic;
+			font-size: 1em;
+			color: rgba(0,0,0,.25);
+		}
+		background-color: #EEE;
+		border-radius: 4px;
+		padding: 16px;
+		margin: 16px;
+	}
+}
