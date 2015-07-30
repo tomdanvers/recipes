@@ -32383,7 +32383,27 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./StyleGuide":183,"./User":184,"./UserAuthentication":185,"parse":21,"parse-react":2,"react":176}],178:[function(require,module,exports){
+},{"./StyleGuide":184,"./User":185,"./UserAuthentication":186,"parse":21,"parse-react":2,"react":176}],178:[function(require,module,exports){
+var React = require('react');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+
+
+module.exports = React.createClass({displayName: "exports",
+    render: function() {
+
+        return (
+            React.createElement("div", {className: "Checkbox"}, 
+                React.createElement("input", {id: "c1", type: "checkbox", className: "Checkbox", checked: this.props.checked, onChange: this.props.onChange}), 
+                React.createElement("label", {htmlFor: "c1"}, React.createElement("span", null, this.props.label))
+            )
+        );
+
+    }
+});
+
+
+},{"parse":21,"parse-react":2,"react":176}],179:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32474,7 +32494,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],179:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],180:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32491,7 +32511,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],180:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],181:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32535,7 +32555,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],181:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],182:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32667,7 +32687,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./EditableInput":178,"./VoiceControl":190,"parse":21,"parse-react":2,"react":176}],182:[function(require,module,exports){
+},{"./EditableInput":179,"./VoiceControl":191,"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32710,7 +32730,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],184:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32754,7 +32774,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./EditableInput":178,"./Login":180,"./Signup":182,"./UserNavItem":187,"./UserNavLabel":188,"./VoiceControl":190,"parse":21,"parse-react":2,"react":176}],184:[function(require,module,exports){
+},{"./EditableInput":179,"./Login":181,"./Signup":183,"./UserNavItem":188,"./UserNavLabel":189,"./VoiceControl":191,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32869,7 +32889,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./Recipe":181,"./UserNav":186,"./UserNew":189,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
+},{"./Recipe":182,"./UserNav":187,"./UserNew":190,"parse":21,"parse-react":2,"react":176}],186:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32891,7 +32911,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./Intro":179,"./Login":180,"./Signup":182,"parse":21,"parse-react":2,"react":176}],186:[function(require,module,exports){
+},{"./Intro":180,"./Login":181,"./Signup":183,"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32945,7 +32965,7 @@ var UserNavLabel = require('./UserNavLabel');
     });
 
 
-},{"./UserNavItem":187,"./UserNavLabel":188,"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
+},{"./UserNavItem":188,"./UserNavLabel":189,"parse":21,"parse-react":2,"react":176}],188:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32961,7 +32981,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],188:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],189:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32974,7 +32994,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],189:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],190:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32996,10 +33016,12 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],190:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],191:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
+
+var Checkbox = require('./Checkbox');
 
 module.exports = React.createClass({displayName: "exports",
 	recognition: null,
@@ -33084,7 +33106,7 @@ module.exports = React.createClass({displayName: "exports",
 		return (
 			React.createElement("div", {className: classes.join(' ')}, 
 				React.createElement("div", {className: "VoiceControl__panel"}, 
-					React.createElement("div", {className: "VoiceControl__check"}, React.createElement("input", {type: "checkbox", checked: this.state.isChecked, onChange: this.changeHandler})), 
+					React.createElement("div", {className: "VoiceControl__check"}, React.createElement(Checkbox, {checked: this.state.isChecked, onChange: this.changeHandler})), 
 					React.createElement("div", {className: "VoiceControl__result"}, this.state.result)
 				)
 			)
@@ -33092,7 +33114,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"parse":21,"parse-react":2,"react":176}],191:[function(require,module,exports){
+},{"./Checkbox":178,"parse":21,"parse-react":2,"react":176}],192:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -33108,4 +33130,4 @@ React.render(
 );
 
 
-},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[191])
+},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[192])

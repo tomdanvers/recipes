@@ -13,6 +13,10 @@
 		border-radius: 8px 8px 0 0;
 		.VoiceControl__check {
 			height: 32px;
+
+			input {
+
+			}
 		}
 		.VoiceControl__result {
 			height: 32px;
@@ -28,13 +32,13 @@
 		transform: translateY(0);
 		transition: transform 1s;
 		.VoiceControl__panel {
-			background-color: green;
+			background-color: #00DD00;
 		}
 	}
 
 	&.is-error {
 		.VoiceControl__panel {
-			background-color: red;
+			background-color: #DD0000;
 		}
 	}
 }

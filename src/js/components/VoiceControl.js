@@ -2,6 +2,8 @@ var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
+var Checkbox = require('./Checkbox');
+
 module.exports = React.createClass({
 	recognition: null,
 	getInitialState: function() {
@@ -85,7 +87,7 @@ module.exports = React.createClass({
 		return (
 			<div className={classes.join(' ')}>
 				<div className="VoiceControl__panel">
-					<div className="VoiceControl__check"><input type="checkbox" checked={this.state.isChecked} onChange={this.changeHandler}/></div>
+					<div className="VoiceControl__check"><Checkbox checked={this.state.isChecked} onChange={this.changeHandler}/></div>
 					<div className="VoiceControl__result">{this.state.result}</div>
 				</div>
 			</div>
