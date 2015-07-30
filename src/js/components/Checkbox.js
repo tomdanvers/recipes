@@ -8,8 +8,7 @@ module.exports = React.createClass({
 
         return (
             <div className="Checkbox">
-                <input id="c1" type="checkbox" className="Checkbox" checked={this.props.checked} onChange={this.props.onChange}/>
-                <label htmlFor="c1"><span>{this.props.label}</span></label>
+                <input id="c1" type="checkbox" className="Checkbox" checked={this.props.checked} onChange={this.props.onChange}/><label htmlFor="c1"><span>{this.props.label}</span></label>
             </div>
         );
 

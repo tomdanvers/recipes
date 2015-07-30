@@ -11,11 +11,12 @@
     background-color: grey;
     border-radius: 8px 8px 0 0; }
     .VoiceControl .VoiceControl__panel .VoiceControl__check {
-      height: 32px; }
+      height: 38px;
+      margin-top: 8px; }
     .VoiceControl .VoiceControl__panel .VoiceControl__result {
       height: 32px; }
   .VoiceControl.is-available {
-    transform: translateY(32px);
+    transform: translateY(38px);
     transition: transform 1s; }
   .VoiceControl.is-enabled {
     transform: translateY(0);

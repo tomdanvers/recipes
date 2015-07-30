@@ -32394,8 +32394,7 @@ module.exports = React.createClass({displayName: "exports",
 
         return (
             React.createElement("div", {className: "Checkbox"}, 
-                React.createElement("input", {id: "c1", type: "checkbox", className: "Checkbox", checked: this.props.checked, onChange: this.props.onChange}), 
-                React.createElement("label", {htmlFor: "c1"}, React.createElement("span", null, this.props.label))
+                React.createElement("input", {id: "c1", type: "checkbox", className: "Checkbox", checked: this.props.checked, onChange: this.props.onChange}), React.createElement("label", {htmlFor: "c1"}, React.createElement("span", null, this.props.label))
             )
         );
 

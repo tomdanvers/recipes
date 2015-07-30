@@ -168,11 +168,12 @@ button, .button {
     background-color: grey;
     border-radius: 8px 8px 0 0; }
     .VoiceControl .VoiceControl__panel .VoiceControl__check {
-      height: 32px; }
+      height: 38px;
+      margin-top: 8px; }
     .VoiceControl .VoiceControl__panel .VoiceControl__result {
       height: 32px; }
   .VoiceControl.is-available {
-    transform: translateY(32px);
+    transform: translateY(38px);
     transition: transform 1s; }
   .VoiceControl.is-enabled {
     transform: translateY(0);
@@ -182,27 +183,27 @@ button, .button {
   .VoiceControl.is-error .VoiceControl__panel {
     background-color: #DD0000; }
 
-.Checkbox input[type="checkbox"] {
-  display: none; }
-
-.Checkbox input[type="checkbox"] + label span {
-  display: inline-block;
-  width: 40px;
-  height: 20px;
-  border: 1px solid darkgrey;
-  background-color: darkgrey;
-  position: relative; }
-  .Checkbox input[type="checkbox"] + label span:after {
-    content: '';
+.Checkbox {
+  height: 20px; }
+  .Checkbox input[type="checkbox"] {
+    display: none; }
+  .Checkbox input[type="checkbox"] + label span {
     display: inline-block;
-    width: 20px;
+    width: 40px;
     height: 20px;
-    left: 0;
-    position: absolute;
-    background-color: grey; }
-
-.Checkbox input[type="checkbox"]:checked + label span:after {
-  left: 20px; }
+    border: 1px solid darkgrey;
+    background-color: darkgrey;
+    position: relative; }
+    .Checkbox input[type="checkbox"] + label span:after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      left: 0;
+      position: absolute;
+      background-color: grey; }
+  .Checkbox input[type="checkbox"]:checked + label span:after {
+    left: 20px; }
 
 .StyleGuide .StyleGuide__item {
   background-color: #EEE;
