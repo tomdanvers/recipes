@@ -70,7 +70,7 @@ module.exports = React.createClass({
 
 				if (confidence > .75) {
 					this.setState({
-						result: transcript
+						result: '"'+transcript+'"'
 					});
 				}
 

@@ -27,7 +27,7 @@ module.exports = React.createClass({
         }
 
         // DEBUG - START
-        component = <StyleGuide />
+        // component = <StyleGuide />
         // DEBUG - END
         return (
             <div className="App">

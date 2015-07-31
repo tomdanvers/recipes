@@ -2875,12 +2875,11 @@ try {
 (function (process){
 /*!
  * Parse JavaScript SDK
- * Version: 1.4.2
- * Built: Thu Apr 09 2015 17:20:31
+ * Version: 1.5.0
+ * Built: Fri Jul 10 2015 17:05:46
  * http://parse.com
  *
- * Copyright 2015 Parse, Inc.
- * The Parse JavaScript SDK is freely distributable under the MIT license.
+ * Copyright 2015 Parse, LLC
  *
  * Includes: Underscore.js
  * Copyright 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
@@ -2888,7 +2887,7 @@ try {
  */
 (function(root) {
   root.Parse = root.Parse || {};
-  root.Parse.VERSION = "js1.4.2";
+  root.Parse.VERSION = "js1.5.0";
 }(this));
 //     Underscore.js 1.4.4
 //     http://underscorejs.org
@@ -4529,6 +4528,8 @@ try {
     dataObject._ApplicationId = Parse.applicationId;
     if (!useMasterKey) {
       dataObject._JavaScriptKey = Parse.javaScriptKey;
+    } else if (!Parse.masterKey) {
+      throw new Error('Cannot use the Master Key, it has not been provided.');
     } else {
       dataObject._MasterKey = Parse.masterKey;
     }
@@ -4540,6 +4541,9 @@ try {
 
       if (sessionToken) {
         return Parse.Promise.as({ _sessionToken: sessionToken });
+      }
+      if (!Parse.User._canUseCurrentUser()) {
+        return Parse.Promise.as(null);
       }
 
       return Parse.User._currentAsync();
@@ -4620,6 +4624,9 @@ try {
       return value.toJSON();
     }
     if (_.isDate(value)) {
+      if (isNaN(value)) {
+        throw new Error('Cannot encode invalid Date');
+      }
       return { "__type": "Date", "iso": value.toJSON() };
     }
     if (value instanceof Parse.GeoPoint) {
@@ -7170,207 +7177,6 @@ try {
     return chunks.join("");
   };
 
-  // TODO(klimt): Move this list to the server.
-  // A list of file extensions to mime types as found here:
-  // http://stackoverflow.com/questions/58510/using-net-how-can-you-find-the-
-  //     mime-type-of-a-file-based-on-the-file-signature
-  var mimeTypes = {
-    ai: "application/postscript",
-    aif: "audio/x-aiff",
-    aifc: "audio/x-aiff",
-    aiff: "audio/x-aiff",
-    asc: "text/plain",
-    atom: "application/atom+xml",
-    au: "audio/basic",
-    avi: "video/x-msvideo",
-    bcpio: "application/x-bcpio",
-    bin: "application/octet-stream",
-    bmp: "image/bmp",
-    cdf: "application/x-netcdf",
-    cgm: "image/cgm",
-    "class": "application/octet-stream",
-    cpio: "application/x-cpio",
-    cpt: "application/mac-compactpro",
-    csh: "application/x-csh",
-    css: "text/css",
-    dcr: "application/x-director",
-    dif: "video/x-dv",
-    dir: "application/x-director",
-    djv: "image/vnd.djvu",
-    djvu: "image/vnd.djvu",
-    dll: "application/octet-stream",
-    dmg: "application/octet-stream",
-    dms: "application/octet-stream",
-    doc: "application/msword",
-    docx: "application/vnd.openxmlformats-officedocument.wordprocessingml." +
-          "document",
-    dotx: "application/vnd.openxmlformats-officedocument.wordprocessingml." +
-          "template",
-    docm: "application/vnd.ms-word.document.macroEnabled.12",
-    dotm: "application/vnd.ms-word.template.macroEnabled.12",
-    dtd: "application/xml-dtd",
-    dv: "video/x-dv",
-    dvi: "application/x-dvi",
-    dxr: "application/x-director",
-    eps: "application/postscript",
-    etx: "text/x-setext",
-    exe: "application/octet-stream",
-    ez: "application/andrew-inset",
-    gif: "image/gif",
-    gram: "application/srgs",
-    grxml: "application/srgs+xml",
-    gtar: "application/x-gtar",
-    hdf: "application/x-hdf",
-    hqx: "application/mac-binhex40",
-    htm: "text/html",
-    html: "text/html",
-    ice: "x-conference/x-cooltalk",
-    ico: "image/x-icon",
-    ics: "text/calendar",
-    ief: "image/ief",
-    ifb: "text/calendar",
-    iges: "model/iges",
-    igs: "model/iges",
-    jnlp: "application/x-java-jnlp-file",
-    jp2: "image/jp2",
-    jpe: "image/jpeg",
-    jpeg: "image/jpeg",
-    jpg: "image/jpeg",
-    js: "application/x-javascript",
-    kar: "audio/midi",
-    latex: "application/x-latex",
-    lha: "application/octet-stream",
-    lzh: "application/octet-stream",
-    m3u: "audio/x-mpegurl",
-    m4a: "audio/mp4a-latm",
-    m4b: "audio/mp4a-latm",
-    m4p: "audio/mp4a-latm",
-    m4u: "video/vnd.mpegurl",
-    m4v: "video/x-m4v",
-    mac: "image/x-macpaint",
-    man: "application/x-troff-man",
-    mathml: "application/mathml+xml",
-    me: "application/x-troff-me",
-    mesh: "model/mesh",
-    mid: "audio/midi",
-    midi: "audio/midi",
-    mif: "application/vnd.mif",
-    mov: "video/quicktime",
-    movie: "video/x-sgi-movie",
-    mp2: "audio/mpeg",
-    mp3: "audio/mpeg",
-    mp4: "video/mp4",
-    mpe: "video/mpeg",
-    mpeg: "video/mpeg",
-    mpg: "video/mpeg",
-    mpga: "audio/mpeg",
-    ms: "application/x-troff-ms",
-    msh: "model/mesh",
-    mxu: "video/vnd.mpegurl",
-    nc: "application/x-netcdf",
-    oda: "application/oda",
-    ogg: "application/ogg",
-    pbm: "image/x-portable-bitmap",
-    pct: "image/pict",
-    pdb: "chemical/x-pdb",
-    pdf: "application/pdf",
-    pgm: "image/x-portable-graymap",
-    pgn: "application/x-chess-pgn",
-    pic: "image/pict",
-    pict: "image/pict",
-    png: "image/png", 
-    pnm: "image/x-portable-anymap",
-    pnt: "image/x-macpaint",
-    pntg: "image/x-macpaint",
-    ppm: "image/x-portable-pixmap",
-    ppt: "application/vnd.ms-powerpoint",
-    pptx: "application/vnd.openxmlformats-officedocument.presentationml." +
-          "presentation",
-    potx: "application/vnd.openxmlformats-officedocument.presentationml." +
-          "template",
-    ppsx: "application/vnd.openxmlformats-officedocument.presentationml." +
-          "slideshow",
-    ppam: "application/vnd.ms-powerpoint.addin.macroEnabled.12",
-    pptm: "application/vnd.ms-powerpoint.presentation.macroEnabled.12",
-    potm: "application/vnd.ms-powerpoint.template.macroEnabled.12",
-    ppsm: "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
-    ps: "application/postscript",
-    qt: "video/quicktime",
-    qti: "image/x-quicktime",
-    qtif: "image/x-quicktime",
-    ra: "audio/x-pn-realaudio",
-    ram: "audio/x-pn-realaudio",
-    ras: "image/x-cmu-raster",
-    rdf: "application/rdf+xml",
-    rgb: "image/x-rgb",
-    rm: "application/vnd.rn-realmedia",
-    roff: "application/x-troff",
-    rtf: "text/rtf",
-    rtx: "text/richtext",
-    sgm: "text/sgml",
-    sgml: "text/sgml",
-    sh: "application/x-sh",
-    shar: "application/x-shar",
-    silo: "model/mesh",
-    sit: "application/x-stuffit",
-    skd: "application/x-koan",
-    skm: "application/x-koan",
-    skp: "application/x-koan",
-    skt: "application/x-koan",
-    smi: "application/smil",
-    smil: "application/smil",
-    snd: "audio/basic",
-    so: "application/octet-stream",
-    spl: "application/x-futuresplash",
-    src: "application/x-wais-source",
-    sv4cpio: "application/x-sv4cpio",
-    sv4crc: "application/x-sv4crc",
-    svg: "image/svg+xml",
-    swf: "application/x-shockwave-flash",
-    t: "application/x-troff",
-    tar: "application/x-tar",
-    tcl: "application/x-tcl",
-    tex: "application/x-tex",
-    texi: "application/x-texinfo",
-    texinfo: "application/x-texinfo",
-    tif: "image/tiff",
-    tiff: "image/tiff",
-    tr: "application/x-troff",
-    tsv: "text/tab-separated-values",
-    txt: "text/plain",
-    ustar: "application/x-ustar",
-    vcd: "application/x-cdlink",
-    vrml: "model/vrml",
-    vxml: "application/voicexml+xml",
-    wav: "audio/x-wav",
-    wbmp: "image/vnd.wap.wbmp",
-    wbmxl: "application/vnd.wap.wbxml",
-    wml: "text/vnd.wap.wml",
-    wmlc: "application/vnd.wap.wmlc",
-    wmls: "text/vnd.wap.wmlscript",
-    wmlsc: "application/vnd.wap.wmlscriptc",
-    wrl: "model/vrml",
-    xbm: "image/x-xbitmap",
-    xht: "application/xhtml+xml",
-    xhtml: "application/xhtml+xml",
-    xls: "application/vnd.ms-excel",
-    xml: "application/xml",
-    xpm: "image/x-xpixmap",
-    xsl: "application/xml",
-    xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    xltx: "application/vnd.openxmlformats-officedocument.spreadsheetml." +
-          "template",
-    xlsm: "application/vnd.ms-excel.sheet.macroEnabled.12",
-    xltm: "application/vnd.ms-excel.template.macroEnabled.12",
-    xlam: "application/vnd.ms-excel.addin.macroEnabled.12",
-    xlsb: "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
-    xslt: "application/xslt+xml",
-    xul: "application/vnd.mozilla.xul+xml",
-    xwd: "image/x-xwindowdump",
-    xyz: "chemical/x-xyz",
-    zip: "application/zip"
-  };
-
   /**
    * Reads a File using a FileReader.
    * @param file {File} the File to read.
@@ -7448,10 +7254,10 @@ try {
     if (extension) {
       extension = extension[1].toLowerCase();
     }
-    var guessedType = type || mimeTypes[extension] || "text/plain";
+    var specifiedType = type || '';
 
     if (_.isArray(data)) {
-      this._source = Parse.Promise.as(encodeBase64(data), guessedType);
+      this._source = Parse.Promise.as(encodeBase64(data), specifiedType);
     } else if (data && data.base64) {
       // if it contains data uri, extract based64 and the type out of it.
       /*jslint maxlen: 1000*/
@@ -7465,7 +7271,7 @@ try {
           (matches.length === 4 ? matches[3] : matches[2]), matches[1]
         );
       } else {
-        this._source = Parse.Promise.as(data.base64, guessedType);
+        this._source = Parse.Promise.as(data.base64, specifiedType);
       }
     } else if (typeof(File) !== "undefined" && data instanceof File) {
       this._source = readAsync(data, type);
@@ -7647,12 +7453,15 @@ try {
    * Valid options are:<ul>
    *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
    *     be used for this request.
+   *   <li>sessionToken: A valid session token, used for making a request on
+   *       behalf of a specific user.
    * </ul>
    */
   Parse.Object.saveAll = function(list, options) {
     options = options || {};
     return Parse.Object._deepSaveAsync(list, {
-      useMasterKey: options.useMasterKey
+      useMasterKey: options.useMasterKey,
+      sessionToken: options.sessionToken
     })._thenRunCallbacks(options);
   };
 
@@ -7705,6 +7514,8 @@ try {
    * Valid options are:<ul>
    *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
    *     be used for this request.
+   *   <li>sessionToken: A valid session token, used for making a request on
+   *       behalf of a specific user.
    * </ul>
    * @return {Parse.Promise} A promise that is fulfilled when the destroyAll
    *     completes.
@@ -7726,6 +7537,7 @@ try {
             route: "batch",
             method: "POST",
             useMasterKey: options.useMasterKey,
+            sessionToken: options.sessionToken,
             data: {
               requests: _.map(batch, function(object) {
                 return {
@@ -8530,6 +8342,8 @@ try {
      *   <li>error: An Backbone-style error callback.
      *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
      *     be used for this request.
+     *   <li>sessionToken: A valid session token, used for making a request on
+     *       behalf of a specific user.
      * </ul>
      * @return {Parse.Promise} A promise that is fulfilled when the fetch
      *     completes.
@@ -8542,7 +8356,8 @@ try {
         route: "classes",
         className: this.className,
         objectId: this.id,
-        useMasterKey: options.useMasterKey
+        useMasterKey: options.useMasterKey,
+        sessionToken: options.sessionToken
       });
       return request.then(function(response, status, xhr) {
         self._finishFetch(self.parse(response, status, xhr), true);
@@ -8593,6 +8408,8 @@ try {
      *   <li>error: An Backbone-style error callback.
      *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
      *     be used for this request.
+     *   <li>sessionToken: A valid session token, used for making a request on
+     *       behalf of a specific user.
      * </ul>
      * @return {Parse.Promise} A promise that is fulfilled when the save
      *     completes.
@@ -8661,7 +8478,8 @@ try {
                                         unsavedFiles);
       if (unsavedChildren.length + unsavedFiles.length > 0) {
         return Parse.Object._deepSaveAsync(this.attributes, {
-          useMasterKey: options.useMasterKey
+          useMasterKey: options.useMasterKey,
+          sessionToken: options.sessionToken
         }).then(function() {
           return model.save(null, options);
         }, function(error) {
@@ -8691,6 +8509,7 @@ try {
           objectId: model.id,
           method: method,
           useMasterKey: options.useMasterKey,
+          sessionToken: options.sessionToken,
           data: json
         });
 
@@ -8730,6 +8549,8 @@ try {
      *   <li>error: An Backbone-style error callback.
      *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
      *     be used for this request.
+     *   <li>sessionToken: A valid session token, used for making a request on
+     *       behalf of a specific user.
      * </ul>
      * @return {Parse.Promise} A promise that is fulfilled when the destroy
      *     completes.
@@ -8755,7 +8576,8 @@ try {
         className: this.className,
         objectId: this.id,
         method: 'DELETE',
-        useMasterKey: options.useMasterKey
+        useMasterKey: options.useMasterKey,
+        sessionToken: options.sessionToken
       });
       return request.then(function() {
         if (options.wait) {
@@ -9318,6 +9140,7 @@ try {
             route: "batch",
             method: "POST",
             useMasterKey: options.useMasterKey,
+            sessionToken: options.sessionToken,
             data: {
               requests: _.map(batch, function(object) {
                 var json = object._getSaveJSON();
@@ -9776,6 +9599,8 @@ try {
      *   <li>error: An Backbone-style error callback.
      *   <li>useMasterKey: In Cloud Code and Node only, uses the Master Key for
      *       this request.
+     *   <li>sessionToken: A valid session token, used for making a request on
+     *       behalf of a specific user.
      * </ul>
      */
     fetch: function(options) {
@@ -9786,7 +9611,8 @@ try {
       var collection = this;
       var query = this.query || new Parse.Query(this.model);
       return query.find({
-        useMasterKey: options.useMasterKey
+        useMasterKey: options.useMasterKey,
+        sessionToken: options.sessionToken
       }).then(function(results) {
         if (options.add) {
           collection.add(results, options);
@@ -9813,6 +9639,8 @@ try {
      *   <li>error: An Backbone-style error callback.
      *   <li>useMasterKey: In Cloud Code and Node only, uses the Master Key for
      *       this request.
+     *   <li>sessionToken: A valid session token, used for making a request on
+     *       behalf of a specific user.
      * </ul>
      */
     create: function(model, options) {
@@ -10448,7 +10276,7 @@ try {
       // Overridden so that the user can be made the current user.
       var newOptions = _.clone(options);
       newOptions.success = function(model) {
-        model._handleSaveResult(true);
+        model._handleSaveResult(Parse.User._canUseCurrentUser());
         if (options.success) {
           options.success.apply(this, arguments);
         }
@@ -10471,6 +10299,11 @@ try {
      *     the login is complete.
      */
     logIn: function(options) {
+      if (!Parse.User._canUseCurrentUser()) {
+        throw new Error(
+          'It is not possible to log in on a server environment.'
+        );
+      }
       var model = this;
       options = options || {};
       var request = Parse._request({
@@ -10657,6 +10490,9 @@ try {
     // Whether to send a Revocable Session header
     _isRevocableSessionEnabled: false,
 
+    // Whether to enable a memory-unsafe current user in node.js
+    _enableUnsafeCurrentUser: false,
+
 
     // Class Methods
 
@@ -10717,6 +10553,11 @@ try {
      *     the login completes.
      */
     become: function(sessionToken, options) {
+      if (!Parse.User._canUseCurrentUser()) {
+        throw new Error(
+          'It is not secure to become a user on a node.js server environment.'
+        );
+      }
       options = options || {};
 
       var user = Parse.Object._create("_User");
@@ -10743,6 +10584,11 @@ try {
      *   destroyed on the server.
      */
     logOut: function() {
+      if (!Parse.User._canUseCurrentUser()) {
+        throw new Error(
+          'There is no current user user on a node.js server environment.'
+        );
+      }
       return Parse.User._currentAsync().then(function(currentUser) {
         var promise = Parse.Storage.removeItemAsync(
           Parse._getParsePath(Parse.User._CURRENT_USER_KEY));
@@ -10796,6 +10642,11 @@ try {
      * @return {Parse.Object} The currently logged in Parse.User.
      */
     current: function() {
+      if (!Parse.User._canUseCurrentUser()) {
+        throw new Error(
+          'There is no current user user on a node.js server environment.'
+        );
+      }
       if (Parse.Storage.async) {
         // We can't return the current user synchronously
         Parse.User._currentAsync();
@@ -10901,10 +10752,21 @@ try {
     enableRevocableSession: function(options) {
       options = options || {};
       Parse.User._isRevocableSessionEnabled = true;
-      if (!Parse._isNode && Parse.User.current()) {
+      if (Parse.User._canUseCurrentUser() && Parse.User.current()) {
         return Parse.User.current()._upgradeToRevocableSession(options);
       }
       return Parse.Promise.as()._thenRunCallbacks(options);
+    },
+
+    /**
+     *
+     */
+    enableUnsafeCurrentUser: function() {
+      Parse.User._enableUnsafeCurrentUser = true;
+    },
+
+    _canUseCurrentUser: function() {
+      return !Parse._isNode || Parse.User._enableUnsafeCurrentUser;
     },
 
     /**
@@ -11161,6 +11023,8 @@ try {
      *   <li>error: An Backbone-style error callback.
      *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
      *     be used for this request.
+     *   <li>sessionToken: A valid session token, used for making a request on
+     *       behalf of a specific user.
      * </ul>
      */
     get: function(objectId, options) {
@@ -11170,6 +11034,9 @@ try {
       var firstOptions = {};
       if (options && _.has(options, 'useMasterKey')) {
         firstOptions = { useMasterKey: options.useMasterKey };
+      }
+      if (options && _.has(options, 'sessionToken')) {
+        firstOptions.sessionToken = options.sessionToken;
       }
 
       return self.first(firstOptions).then(function(response) {
@@ -11227,6 +11094,8 @@ try {
      *   <li>error: Function to call when the find fails.
      *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
      *     be used for this request.
+     *   <li>sessionToken: A valid session token, used for making a request on
+     *       behalf of a specific user.
      * </ul>
      *
      * @return {Parse.Promise} A promise that is resolved with the results when
@@ -11241,6 +11110,7 @@ try {
         className: this.className,
         method: "GET",
         useMasterKey: options.useMasterKey,
+        sessionToken: options.sessionToken,
         data: this.toJSON()
       });
 
@@ -11269,6 +11139,8 @@ try {
      *   <li>error: Function to call when the find fails.
      *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
      *     be used for this request.
+     *   <li>sessionToken: A valid session token, used for making a request on
+     *       behalf of a specific user.
      * </ul>
      *
      * @return {Parse.Promise} A promise that is resolved with the count when
@@ -11286,6 +11158,7 @@ try {
         className: self.className, 
         method: "GET",
         useMasterKey: options.useMasterKey,
+        sessionToken: options.sessionToken,
         data: params
       });
 
@@ -11306,6 +11179,8 @@ try {
      *   <li>error: Function to call when the find fails.
      *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
      *     be used for this request.
+     *   <li>sessionToken: A valid session token, used for making a request on
+     *       behalf of a specific user.
      * </ul>
      *
      * @return {Parse.Promise} A promise that is resolved with the object when
@@ -11322,6 +11197,7 @@ try {
         className: this.className, 
         method: "GET",
         useMasterKey: options.useMasterKey,
+        sessionToken: options.sessionToken,
         data: params
       });
 
@@ -11907,6 +11783,9 @@ try {
       var findOptions = {};
       if (_.has(options, "useMasterKey")) {
         findOptions.useMasterKey = options.useMasterKey;
+      }
+      if (_.has(options, 'sessionToken')) {
+        findOptions.sessionToken = options.sessionToken;
       }
 
       var finished = false;
@@ -12550,6 +12429,7 @@ try {
         className: name,
         method: 'POST',
         useMasterKey: options.useMasterKey,
+        sessionToken: options.sessionToken,
         data: Parse._encode(data, null, true)
       });
 
@@ -32372,7 +32252,7 @@ module.exports = React.createClass({displayName: "exports",
         }
 
         // DEBUG - START
-        component = React.createElement(StyleGuide, null)
+        // component = <StyleGuide />
         // DEBUG - END
         return (
             React.createElement("div", {className: "App"}, 
@@ -33090,7 +32970,7 @@ module.exports = React.createClass({displayName: "exports",
 
 				if (confidence > .75) {
 					this.setState({
-						result: transcript
+						result: '"'+transcript+'"'
 					});
 				}
 
