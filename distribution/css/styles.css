@@ -167,9 +167,9 @@ button, .button {
   text-align: center; }
   .VoiceControl .VoiceControl__panel {
     display: inline-block;
-    width: 250px;
-    background-color: grey;
-    border-radius: 8px 8px 0 0; }
+    background-color: darkgrey;
+    border-radius: 8px 8px 0 0;
+    width: 250px; }
     .VoiceControl .VoiceControl__panel .VoiceControl__check {
       height: 38px;
       margin-top: 8px; }
@@ -194,19 +194,31 @@ button, .button {
     display: inline-block;
     width: 40px;
     height: 20px;
-    border: 1px solid darkgrey;
-    background-color: darkgrey;
-    position: relative; }
+    border: 1px solid #656565;
+    background-color: #737070;
+    position: relative;
+    border-radius: 10px; }
     .Checkbox input[type="checkbox"] + label span:after {
       content: '';
       display: inline-block;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       left: 0;
       position: absolute;
-      background-color: grey; }
+      border: 1px solid #2E792E;
+      background-color: #368136;
+      transition: left 0.75s, background-color 0.25s, box-shadow, 0.25s;
+      border-radius: 10px; }
   .Checkbox input[type="checkbox"]:checked + label span:after {
-    left: 20px; }
+    left: 20px;
+    background-color: #8EFF8E;
+    border: 1px solid #8EFF8E;
+    -webkit-box-shadow: 0 0 5px #8EFF8E;
+    -moz-box-shadow: 0 0 5px #8EFF8E;
+    -ms-box-shadow: 0 0 5px #8EFF8E;
+    -o-box-shadow: 0 0 5px #8EFF8E;
+    box-shadow: 0 0 5px #8EFF8E;
+    transition: left 0.75s, background-color 0.25s, box-shadow, 0.25s; }
 
 .StyleGuide .StyleGuide__item {
   background-color: #EEE;

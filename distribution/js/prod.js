@@ -33046,7 +33046,7 @@ module.exports = React.createClass({displayName: "exports",
 		if (isAvailable) {
 			this.recognition = new window.SpeechRecognition();
 			this.recognition.continuous = true;
-			this.recognition.interimResults = false;
+			this.recognition.interimResults = true;
 			this.recognition.lang = 'en-US';
 
 			this.recognition.onstart = function() {
@@ -33080,7 +33080,20 @@ module.exports = React.createClass({displayName: "exports",
 			}.bind(this);
 
 			this.recognition.onresult = function(event) {
-				console.log(event);
+				var results = event.results;
+				var result = results[results.length - 1];
+
+				var transcript = result[0].transcript;
+				var confidence = result[0].confidence;
+
+				console.log(transcript, confidence)
+
+				if (confidence > .75) {
+					this.setState({
+						result: transcript
+					});
+				}
+
 			}.bind(this);
 		}
 	},

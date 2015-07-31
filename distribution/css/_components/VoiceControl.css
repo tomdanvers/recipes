@@ -23,7 +23,10 @@
   .VoiceControl.is-enabled {
     transform: translateY(0);
     transition: transform 1s; }
+<<<<<<< HEAD
     .VoiceControl.is-enabled .VoiceControl__panel {
       border-top: 3px solid #00DD00; }
+=======
+>>>>>>> master
   .VoiceControl.is-error .VoiceControl__panel {
     border-top: 3px solid #DD0000; }

@@ -8,23 +8,31 @@
 		display: inline-block;
 		width: 40px;
 		height: 20px;
-		border: 1px solid darkgrey;
-		background-color: darkgrey;
+		border: 1px solid #656565;
+		background-color: #737070;
 		position: relative;
+		border-radius: 10px;
 		&:after {
 			content: '';
 			display: inline-block;
-			width: 20px;
-			height: 20px;
+			width: 18px;
+			height: 18px;
 			left: 0;
 			position: absolute;
-			background-color: grey;
+			border: 1px solid #2E792E;
+			background-color: #368136;
+			transition: left .75s, background-color .25s, box-shadow, .25s;
+			border-radius: 10px;
 		}
 	}
 
 	input[type="checkbox"]:checked + label span {
 		&:after {
 			left: 20px;
+			background-color: #8EFF8E;
+			border: 1px solid #8EFF8E;
+			@include vendor(box-shadow, 0 0 5px #8EFF8E);
+			transition: left .75s, background-color .25s, box-shadow, .25s;
 		}
 	}
 }

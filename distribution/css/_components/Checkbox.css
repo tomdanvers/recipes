@@ -8,7 +8,8 @@
     height: 20px;
     border: 1px solid darkgrey;
     background-color: darkgrey;
-    position: relative; }
+    position: relative;
+    border-radius: 10px; }
     .Checkbox input[type="checkbox"] + label span:after {
       content: '';
       display: inline-block;
@@ -16,6 +17,11 @@
       height: 20px;
       left: 0;
       position: absolute;
-      background-color: grey; }
+      background-color: grey;
+      transition: left 0.5s;
+      border-radius: 10px; }
   .Checkbox input[type="checkbox"]:checked + label span:after {
-    left: 20px; }
+    left: 20px;
+    background-color: #8EFF8E;
+    box-shadow: #8EFF8E 0 0 0;
+    transition: left 0.5s, background-color 0.5s; }
