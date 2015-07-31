@@ -21,7 +21,5 @@
   .VoiceControl.is-enabled {
     transform: translateY(0);
     transition: transform 1s; }
-    .VoiceControl.is-enabled .VoiceControl__panel {
-      background-color: #00DD00; }
   .VoiceControl.is-error .VoiceControl__panel {
     background-color: #DD0000; }
