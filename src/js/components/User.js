@@ -24,6 +24,9 @@ module.exports = React.createClass({
     },
     navClickHandler: function(id) {
         switch (id) {
+            case 'logout':
+                Parse.User.logOut();
+                break;
             case 'new':
                 ParseReact.Mutation.Create('Recipe', {
                     name: 'New Recipe',
@@ -100,9 +103,6 @@ module.exports = React.createClass({
                 <UserNav recipes={this.data.recipes} onClick={this.navClickHandler}/>
                 <h1 className="Header">Hello {user.get('username')}, {this.welcomeMessage()}</h1>
                 {recipe}
-                <div className="Footer">
-                    <button onClick={Parse.User.logOut}>Log out</button>
-                </div>
             </div>
         );
     },

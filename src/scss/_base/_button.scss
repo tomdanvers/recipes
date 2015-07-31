@@ -8,6 +8,7 @@ button, .button {
 	cursor: pointer;
 	padding: 8px;
 	transition: background-color .2s;
+	text-transform: uppercase;
 
 
 	&:hover, &:focus {

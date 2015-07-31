@@ -1,6 +1,8 @@
 .VoiceControl {
 	position: fixed;
 	bottom: 0;
+	left: 0;
+	right: 0;
 	width: 100%;
 	transform: translateY(100px);
 	transition: transform 1s;
@@ -30,13 +32,13 @@
 		transform: translateY(0);
 		transition: transform 1s;
 		.VoiceControl__panel {
-			background-color: #00DD00;
+			border-top: 3px solid #00DD00;
 		}
 	}
 
 	&.is-error {
 		.VoiceControl__panel {
-			background-color: #DD0000;
+			border-top: 3px solid #DD0000;
 		}
 	}
 }

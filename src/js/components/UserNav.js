@@ -42,6 +42,8 @@ var UserNavLabel = require('./UserNavLabel');
                         <UserNavLabel label='My Recipes' />
                         {navItems}
                         <UserNavItem id='new' label='+ New Recipe' onClick={this.navHandler} />
+                        <UserNavLabel label='Account' />
+                        <UserNavItem id='logout' label='Log Out' onClick={this.navHandler} />
                     </ul>
                     <div className="UserNav__toggle" onClick={this.toggleHandler}></div>
                 </div>

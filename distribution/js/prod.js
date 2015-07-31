@@ -32800,6 +32800,9 @@ module.exports = React.createClass({displayName: "exports",
     },
     navClickHandler: function(id) {
         switch (id) {
+            case 'logout':
+                Parse.User.logOut();
+                break;
             case 'new':
                 ParseReact.Mutation.Create('Recipe', {
                     name: 'New Recipe',
@@ -32875,10 +32878,7 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", {className: "User"}, 
                 React.createElement(UserNav, {recipes: this.data.recipes, onClick: this.navClickHandler}), 
                 React.createElement("h1", {className: "Header"}, "Hello ", user.get('username'), ", ", this.welcomeMessage()), 
-                recipe, 
-                React.createElement("div", {className: "Footer"}, 
-                    React.createElement("button", {onClick: Parse.User.logOut}, "Log out")
-                )
+                recipe
             )
         );
     },
@@ -32954,7 +32954,9 @@ var UserNavLabel = require('./UserNavLabel');
                     React.createElement("ul", {className: "UserNav__items"}, 
                         React.createElement(UserNavLabel, {label: "My Recipes"}), 
                         navItems, 
-                        React.createElement(UserNavItem, {id: "new", label: "+ New Recipe", onClick: this.navHandler})
+                        React.createElement(UserNavItem, {id: "new", label: "+ New Recipe", onClick: this.navHandler}), 
+                        React.createElement(UserNavLabel, {label: "Account"}), 
+                        React.createElement(UserNavItem, {id: "logout", label: "Log Out", onClick: this.navHandler})
                     ), 
                     React.createElement("div", {className: "UserNav__toggle", onClick: this.toggleHandler})
                 )

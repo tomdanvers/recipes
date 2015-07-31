@@ -59,7 +59,8 @@ button, .button {
   border: none;
   cursor: pointer;
   padding: 8px;
-  transition: background-color 0.2s; }
+  transition: background-color 0.2s;
+  text-transform: uppercase; }
   button:hover, button:focus, .button:hover, .button:focus {
     outline: none;
     background-color: #CCC;
@@ -91,7 +92,7 @@ button, .button {
 
 .is-highlighted {
   background-color: rgba(255, 255, 0, 0.2);
-  font-size: 1.5em; }
+  font-weight: bold; }
 
 .UserNav .UserNav__toggle {
   position: fixed;
@@ -158,6 +159,8 @@ button, .button {
 .VoiceControl {
   position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   transform: translateY(100px);
   transition: transform 1s;
@@ -179,9 +182,9 @@ button, .button {
     transform: translateY(0);
     transition: transform 1s; }
     .VoiceControl.is-enabled .VoiceControl__panel {
-      background-color: #00DD00; }
+      border-top: 3px solid #00DD00; }
   .VoiceControl.is-error .VoiceControl__panel {
-    background-color: #DD0000; }
+    border-top: 3px solid #DD0000; }
 
 .Checkbox {
   height: 20px; }
