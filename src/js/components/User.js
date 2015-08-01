@@ -101,12 +101,8 @@ module.exports = React.createClass({
         return (
             <div className="User">
                 <UserNav recipes={this.data.recipes} onClick={this.navClickHandler}/>
-                <h1 className="Header">Hello {user.get('username')}, {this.welcomeMessage()}</h1>
                 {recipe}
             </div>
         );
-    },
-    welcomeMessage: function() {
-        return 'lets cook!';
     }
 });

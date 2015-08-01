@@ -18,15 +18,51 @@ ol, ul {
 /**
  * Global Typography
  */
-html, body, div {
-  font-family: "Prohibition W00 Regular", Helvetica Neue, Helvetica, Arial, Sans-serif; }
+html, body, div, li {
+  font-family: Arial, Helvetica Neue, Helvetica, Sans-serif; }
 
 h1, .h1 {
-  font-size: 2em;
-  margin-top: 0; }
+  font-size: 3.5em;
+  margin-top: 0;
+  font-family: 'Amatic SC';
+  font-weight: 700; }
 
 h2, .h2 {
-  font-size: 1.5em; }
+  font-size: 2em;
+  font-family: 'Amatic SC';
+  font-weight: 700; }
+
+/* latin */
+@font-face {
+  font-family: 'Amatic SC';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Amatic SC"), local("AmaticSC-Regular"), url(../fonts/amatic-sc-regular.woff2) format("woff2");
+  unicode-range: U0-0FF, U131, U152-153, U2C 6, U2DA, U2DC, U2000-206F, U2074, U20AC, U2212, U2215, UE0FF, UEFFD, UF000; }
+
+/* latin */
+@font-face {
+  font-family: 'Amatic SC';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Amatic SC Bold"), local("AmaticSC-Bold"), url(../fonts/amatic-sc-bold.woff2) format("woff2");
+  unicode-range: U0-0FF, U131, U152-153, U2C 6, U2DA, U2DC, U2000-206F, U2074, U20AC, U2212, U2215, UE0FF, UEFFD, UF000; }
+
+/* latin */
+@font-face {
+  font-family: 'Sarala';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Sarala"), local("Sarala-Regular"), url(../fonts/sarala-regular.woff2) format("woff2");
+  unicode-range: U0-0FF, U131, U152-153, U2C 6, U2DA, U2DC, U2000-206F, U2074, U20AC, U2212, U2215, UE0FF, UEFFD, UF000; }
+
+/* latin */
+@font-face {
+  font-family: 'Sarala';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Sarala Bold"), local("Sarala-Bold"), url(../fonts/sarala-bold.woff2) format("woff2");
+  unicode-range: U0-0FF, U131, U152-153, U2C 6, U2DA, U2DC, U2000-206F, U2074, U20AC, U2212, U2215, UE0FF, UEFFD, UF000; }
 
 input {
   width: 100%;
