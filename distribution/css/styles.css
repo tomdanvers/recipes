@@ -160,6 +160,7 @@ button, .button {
   padding: 16px;
   position: fixed;
   right: 0;
+  top: 0;
   height: 100%;
   width: 225px;
   -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
@@ -167,7 +168,7 @@ button, .button {
   -ms-box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
   -o-box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
-  transform: translateX(225px);
+  transform: translateX(240px);
   transition: transform 0.5s; }
   .UserNav .UserNav__items .UserNav__item:first-child, .UserNav .UserNav__items .UserNav__label:first-child {
     margin-top: 50px; }
@@ -182,6 +183,9 @@ button, .button {
   transition: transform 0.5s; }
 
 .UserNav__label {
+  font-family: 'Amatic SC';
+  font-weight: 700;
+  font-size: 2em;
   list-style: none;
   font-weight: bold;
   padding: 4px;

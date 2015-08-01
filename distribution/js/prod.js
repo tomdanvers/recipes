@@ -32876,8 +32876,8 @@ module.exports = React.createClass({displayName: "exports",
         var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {id: this.state.selectedRecipe.objectId, name: this.state.name, ingredients: this.state.ingredients, method: this.state.method, editing: this.state.editing, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
         return (
             React.createElement("div", {className: "User"}, 
-                React.createElement(UserNav, {recipes: this.data.recipes, onClick: this.navClickHandler}), 
-                recipe
+                recipe, 
+                React.createElement(UserNav, {recipes: this.data.recipes, onClick: this.navClickHandler})
             )
         );
     }

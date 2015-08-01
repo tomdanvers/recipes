@@ -100,8 +100,8 @@ module.exports = React.createClass({
         var recipe = this.state.selectedRecipe ? (<Recipe id={this.state.selectedRecipe.objectId} name={this.state.name} ingredients={this.state.ingredients} method={this.state.method} editing={this.state.editing} onEditStart={this.editStartHandler} onEditUpdate={this.editUpdateHandler} onEditStop={this.editStopHandler} onRecipeRemove={this.recipeRemoveHandler}/>) : <UserNew/>;
         return (
             <div className="User">
-                <UserNav recipes={this.data.recipes} onClick={this.navClickHandler}/>
                 {recipe}
+                <UserNav recipes={this.data.recipes} onClick={this.navClickHandler}/>
             </div>
         );
     }
