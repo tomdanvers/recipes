@@ -7,9 +7,11 @@ var EditableInput = require('./EditableInput');
 var VoiceControl = require('./VoiceControl');
 
 module.exports = React.createClass({
+    highlights: [],
     getInitialState: function() {
         return {
             highlightIndex: false,
+            highlightMatch: null,
             highlightCount: 0
         };
     },
@@ -35,14 +37,17 @@ module.exports = React.createClass({
     },
     componentWillReceiveProps: function(nextProps){
 
-        var highlightCount = 0; 
-        
-        // Ingredients
-        highlightCount ++;
 
-        // Method 
-        highlightCount ++;
-        highlightCount += nextProps.method.split('\n').length;
+        this.highlights = [];
+        this.highlights.push('ingredients');
+        this.highlights.push('method');
+        
+        var methodItems = this.props.method.split('\n');
+        methodItems.map(function(item, index) {
+            this.highlights.push('method '+(index+1));
+        }.bind(this));
+
+        var highlightCount = this.highlights.length;
 
         if (this.props.id !== nextProps.id) {
 
@@ -61,7 +66,7 @@ module.exports = React.createClass({
     
     },
     handleKeyDown: function(event) {
-        console.log(this.props.editing)
+        
         if (this.props.editing) {
             
             return;  
@@ -69,50 +74,86 @@ module.exports = React.createClass({
         } else if (event.keyCode === 38 || event.keyCode === 40) { 
             
             event.preventDefault();
-
-            var index;
             
-            if (typeof(this.state.highlightIndex) === 'boolean') {
-                index = 0;
-            } else {
-                index = this.state.highlightIndex;
-                
-                switch (event.keyCode) {
-                    case 38:
-                        index --;
-                        break;
-                    case 40:
-                        index ++;
-                        break;
-                }
-
-                if (index < 0) {
-                    index = this.state.highlightCount - 1;
-                } else if(index >= this.state.highlightCount) {
-                    index = 0;
-                }
-
+            var diff;
+            switch (event.keyCode) {
+                case 38:
+                    diff = -1;
+                    break;
+                case 40:
+                    diff = 1;
+                    break;
             }
-            console.log(index)
-            if (this.state.highlightIndex !== index) {
-                this.setState({highlightIndex:index});
-            }
+
+            this.adjustHighlightIndex(diff);
 
         }
 
     },
+    adjustHighlightIndex: function(diff) {
+
+        var index;
+            
+        if (typeof(this.state.highlightIndex) === 'boolean') {
+            index = 0;
+        } else if (this.state.highlightMatch) {
+            for (var i = 0; i < this.highlights.length; i++) {
+                if (this.highlights[i] === this.state.highlightMatch) {
+                    index = i;
+                }
+            }
+        } else {
+            index = this.state.highlightIndex;
+            
+            index += diff;
+
+            if (index < 0) {
+                index = this.state.highlightCount - 1;
+            } else if(index >= this.state.highlightCount) {
+                index = 0;
+            }
+
+        }
+        
+        if (this.state.highlightIndex !== index) {
+            this.setState({
+                highlightMatch: null,
+                highlightIndex:index
+            });
+        }
+
+    },
+    handleMatch: function(match) {
+        
+        console.log('Recipe.handleMatch(',match,')');
+
+        if (match === 'next') {
+            
+            this.adjustHighlightIndex(1);
+
+        } else if (match === 'previous') {
+
+            this.adjustHighlightIndex(-1);
+
+        } else {
+            
+            this.setState({
+                highlightMatch: match
+            });
+
+        }
+    },
     render: function() {
         
-        var highlights = [];
-        highlights.push('ingredients');
-        highlights.push('method');
+        var highlight;
+        
+        if (this.state.highlightMatch) {
+            highlight = this.state.highlightMatch;
+        } else {
+            highlight = this.state.highlightIndex === false ? null : this.highlights[this.state.highlightIndex];
+        }
 
-        var methodItems = this.props.method.split('\n');
-        methodItems.map(function(item, index) {
-            highlights.push('method-'+index);
-        });
-
-        var highlight = this.state.highlightIndex === false ? null : highlights[this.state.highlightIndex];
+        var phrases = this.highlights.concat(['next','previous']);
         
         return (
 
@@ -122,8 +163,8 @@ module.exports = React.createClass({
                 <EditableInput id="ingredients" typeIn="textarea" typeOut="div" className="Recipe__ingredients" value={this.props.ingredients} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
                 <h2>Method</h2>
                 <EditableInput id="method" typeIn="textarea" typeOut="ol" className="Recipe__method" value={this.props.method} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
-                <VoiceControl />
-                <button onClick={this.removeHandler}>Remove Recipe</button>
+                <VoiceControl phrases={phrases} onMatch={this.handleMatch}/>
+                <button className="Recipe__remove" onClick={this.removeHandler}>Remove Recipe</button>
             </div>
 
         );

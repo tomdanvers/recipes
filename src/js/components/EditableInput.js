@@ -66,7 +66,7 @@ module.exports = React.createClass({
                         <ol id={this.props.id} className={'EditableInput EditableInput__ol ' + this.props.className + ' ' + (this.props.highlight === this.props.id ? 'is-highlighted' : '')} ref="output" onClick={this.clickHandler}>
                             {
                                 items.map(function(item, index) {
-                                    return <li key={index} className={this.props.highlight === this.props.id + '-' + index ? 'is-highlighted' : ''}>{item}</li>
+                                    return <li key={index} className={this.props.highlight === this.props.id + ' ' + (index + 1) ? 'is-highlighted' : ''}>{item}</li>
                                 }.bind(this))
                             }
                         </ol>

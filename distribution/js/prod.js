@@ -32471,7 +32471,7 @@ module.exports = React.createClass({displayName: "exports",
                         React.createElement("ol", {id: this.props.id, className: 'EditableInput EditableInput__ol ' + this.props.className + ' ' + (this.props.highlight === this.props.id ? 'is-highlighted' : ''), ref: "output", onClick: this.clickHandler}, 
                             
                                 items.map(function(item, index) {
-                                    return React.createElement("li", {key: index, className: this.props.highlight === this.props.id + '-' + index ? 'is-highlighted' : ''}, item)
+                                    return React.createElement("li", {key: index, className: this.props.highlight === this.props.id + ' ' + (index + 1) ? 'is-highlighted' : ''}, item)
                                 }.bind(this))
                             
                         )
@@ -32564,9 +32564,11 @@ var EditableInput = require('./EditableInput');
 var VoiceControl = require('./VoiceControl');
 
 module.exports = React.createClass({displayName: "exports",
+    highlights: [],
     getInitialState: function() {
         return {
             highlightIndex: false,
+            highlightMatch: null,
             highlightCount: 0
         };
     },
@@ -32592,14 +32594,17 @@ module.exports = React.createClass({displayName: "exports",
     },
     componentWillReceiveProps: function(nextProps){
 
-        var highlightCount = 0; 
-        
-        // Ingredients
-        highlightCount ++;
 
-        // Method 
-        highlightCount ++;
-        highlightCount += nextProps.method.split('\n').length;
+        this.highlights = [];
+        this.highlights.push('ingredients');
+        this.highlights.push('method');
+        
+        var methodItems = this.props.method.split('\n');
+        methodItems.map(function(item, index) {
+            this.highlights.push('method '+(index+1));
+        }.bind(this));
+
+        var highlightCount = this.highlights.length;
 
         if (this.props.id !== nextProps.id) {
 
@@ -32618,7 +32623,7 @@ module.exports = React.createClass({displayName: "exports",
     
     },
     handleKeyDown: function(event) {
-        console.log(this.props.editing)
+        
         if (this.props.editing) {
             
             return;  
@@ -32626,50 +32631,86 @@ module.exports = React.createClass({displayName: "exports",
         } else if (event.keyCode === 38 || event.keyCode === 40) { 
             
             event.preventDefault();
-
-            var index;
             
-            if (typeof(this.state.highlightIndex) === 'boolean') {
-                index = 0;
-            } else {
-                index = this.state.highlightIndex;
-                
-                switch (event.keyCode) {
-                    case 38:
-                        index --;
-                        break;
-                    case 40:
-                        index ++;
-                        break;
-                }
-
-                if (index < 0) {
-                    index = this.state.highlightCount - 1;
-                } else if(index >= this.state.highlightCount) {
-                    index = 0;
-                }
-
+            var diff;
+            switch (event.keyCode) {
+                case 38:
+                    diff = -1;
+                    break;
+                case 40:
+                    diff = 1;
+                    break;
             }
-            console.log(index)
-            if (this.state.highlightIndex !== index) {
-                this.setState({highlightIndex:index});
-            }
+
+            this.adjustHighlightIndex(diff);
 
         }
 
     },
+    adjustHighlightIndex: function(diff) {
+
+        var index;
+            
+        if (typeof(this.state.highlightIndex) === 'boolean') {
+            index = 0;
+        } else if (this.state.highlightMatch) {
+            for (var i = 0; i < this.highlights.length; i++) {
+                if (this.highlights[i] === this.state.highlightMatch) {
+                    index = i;
+                }
+            }
+        } else {
+            index = this.state.highlightIndex;
+            
+            index += diff;
+
+            if (index < 0) {
+                index = this.state.highlightCount - 1;
+            } else if(index >= this.state.highlightCount) {
+                index = 0;
+            }
+
+        }
+        
+        if (this.state.highlightIndex !== index) {
+            this.setState({
+                highlightMatch: null,
+                highlightIndex:index
+            });
+        }
+
+    },
+    handleMatch: function(match) {
+        
+        console.log('Recipe.handleMatch(',match,')');
+
+        if (match === 'next') {
+            
+            this.adjustHighlightIndex(1);
+
+        } else if (match === 'previous') {
+
+            this.adjustHighlightIndex(-1);
+
+        } else {
+            
+            this.setState({
+                highlightMatch: match
+            });
+
+        }
+    },
     render: function() {
         
-        var highlights = [];
-        highlights.push('ingredients');
-        highlights.push('method');
+        var highlight;
+        
+        if (this.state.highlightMatch) {
+            highlight = this.state.highlightMatch;
+        } else {
+            highlight = this.state.highlightIndex === false ? null : this.highlights[this.state.highlightIndex];
+        }
 
-        var methodItems = this.props.method.split('\n');
-        methodItems.map(function(item, index) {
-            highlights.push('method-'+index);
-        });
-
-        var highlight = this.state.highlightIndex === false ? null : highlights[this.state.highlightIndex];
+        var phrases = this.highlights.concat(['next','previous']);
         
         return (
 
@@ -32679,8 +32720,8 @@ module.exports = React.createClass({displayName: "exports",
                 React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredients", value: this.props.ingredients, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                 React.createElement("h2", null, "Method"), 
                 React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__method", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
-                React.createElement(VoiceControl, null), 
-                React.createElement("button", {onClick: this.removeHandler}, "Remove Recipe")
+                React.createElement(VoiceControl, {phrases: phrases, onMatch: this.handleMatch}), 
+                React.createElement("button", {className: "Recipe__remove", onClick: this.removeHandler}, "Remove Recipe")
             )
 
         );
@@ -32745,10 +32786,13 @@ var UserNavLabel = require('./UserNavLabel');
 var VoiceControl = require('./VoiceControl');
 
 module.exports = React.createClass({displayName: "exports",
+    handleMatch: function(result) {
+        console.log('StyleGuide.handleMatch(', result, ')');
+    },
     render: function() {
         return (
             React.createElement("div", {className: "StyleGuide"}, 
-                React.createElement(VoiceControl, null), 
+                React.createElement(VoiceControl, {phrases: ['ingredients', 'method', 'method 1', 'method 2'], onMatch: this.handleMatch}), 
                 React.createElement("div", {className: "StyleGuide__item"}, 
                     React.createElement("h1", {className: "StyleGuide__label"}, "EditableInput"), 
                     React.createElement(EditableInput, {id: "editable", typeIn: "textarea", typeOut: "ol", className: "Recipe__method", value: "Hello\nWorld!", highlight: "editable-0", onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
@@ -33049,7 +33093,7 @@ module.exports = React.createClass({displayName: "exports",
 		if (isAvailable) {
 			this.recognition = new window.SpeechRecognition();
 			this.recognition.continuous = true;
-			this.recognition.interimResults = true;
+			this.recognition.interimResults = false;
 			this.recognition.lang = 'en-US';
 
 			this.recognition.onstart = function() {
@@ -33084,21 +33128,42 @@ module.exports = React.createClass({displayName: "exports",
 
 			this.recognition.onresult = function(event) {
 				var results = event.results;
-				var result = results[results.length - 1];
+				var result = results[results.length - 1]
 
-				var transcript = result[0].transcript;
+				var transcript = result[0].transcript.trim();
 				var confidence = result[0].confidence;
-
-				console.log(transcript, confidence)
 
 				if (confidence > .75) {
 					this.setState({
 						result: '"'+transcript+'"'
 					});
+
+					var match = this.checkResult(transcript);
+					if (match) {
+						this.props.onMatch(match);
+					}
 				}
 
 			}.bind(this);
 		}
+	},
+	checkResult: function(result) {
+
+		var phrase;
+		
+		console.log('VoiceControl.checkResult(', result, ')');
+		
+		for (var i = 0; i < this.props.phrases.length; i++) {
+			phrase = this.props.phrases[i];
+			
+			// Check exact match
+			if (phrase === result) {
+				return phrase;
+			}
+		}
+
+		return false;
+
 	},
 	componentWillUpdate: function(nextProps, nextState) {
 		

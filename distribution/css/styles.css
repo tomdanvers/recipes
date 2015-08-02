@@ -201,6 +201,8 @@ button, .button {
     box-sizing: border-box; }
   .Recipe .Recipe__ingredients {
     padding-left: 40px; }
+  .Recipe .Recipe__remove {
+    margin: 64px 0; }
 
 .VoiceControl {
   position: fixed;
