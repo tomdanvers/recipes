@@ -27,6 +27,9 @@ module.exports = React.createClass({
             this.props.onRecipeRemove();
         }
     },
+    componentWillMount: function() {
+        window.addEventListener('keydown', this.handleKeyDown);
+    },
     componentWillUnmount: function() {
         window.removeEventListener('keydown', this.handleKeyDown);
     },
@@ -58,7 +61,7 @@ module.exports = React.createClass({
     
     },
     handleKeyDown: function(event) {
-        
+        console.log(this.props.editing)
         if (this.props.editing) {
             
             return;  
@@ -90,7 +93,7 @@ module.exports = React.createClass({
                 }
 
             }
-            
+            console.log(index)
             if (this.state.highlightIndex !== index) {
                 this.setState({highlightIndex:index});
             }
