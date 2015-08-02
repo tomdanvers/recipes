@@ -22,13 +22,13 @@ html, body, div, li {
   font-family: Arial, Helvetica Neue, Helvetica, Sans-serif; }
 
 h1, .h1 {
-  font-size: 3.5em;
+  font-size: 4em;
   margin-top: 0;
   font-family: 'Amatic SC';
   font-weight: 700; }
 
 h2, .h2 {
-  font-size: 2em;
+  font-size: 3em;
   font-family: 'Amatic SC';
   font-weight: 700; }
 
@@ -198,11 +198,24 @@ button, .button {
 .Recipe {
   padding: 17px; }
   .Recipe .Recipe__ingredients, .Recipe .Recipe__method {
+    width: 50%;
     box-sizing: border-box; }
   .Recipe .Recipe__ingredients {
-    padding-left: 40px; }
+    float: left; }
+    .Recipe .Recipe__ingredients .Recipe__ingredientsInner {
+      padding-left: 40px;
+      box-sizing: border-box; }
+  .Recipe .Recipe__method {
+    float: right; }
   .Recipe .Recipe__remove {
     margin: 64px 0; }
+  @media screen and (max-width: 768px) {
+    .Recipe .Recipe__ingredients {
+      float: none;
+      width: 100%; }
+    .Recipe .Recipe__method {
+      float: none;
+      width: 100%; } }
 
 .VoiceControl {
   position: fixed;

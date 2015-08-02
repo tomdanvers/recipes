@@ -32652,14 +32652,22 @@ module.exports = React.createClass({displayName: "exports",
         var index;
             
         if (typeof(this.state.highlightIndex) === 'boolean') {
+            
+            // Initial 
             index = 0;
+
         } else if (this.state.highlightMatch) {
+            
+            // Determine index from previous  match
             for (var i = 0; i < this.highlights.length; i++) {
                 if (this.highlights[i] === this.state.highlightMatch) {
                     index = i;
                 }
             }
+
         } else {
+
+            // Otherwise increment/decrement
             index = this.state.highlightIndex;
             
             index += diff;
@@ -32673,6 +32681,7 @@ module.exports = React.createClass({displayName: "exports",
         }
         
         if (this.state.highlightIndex !== index) {
+            // If its changed then update
             this.setState({
                 highlightMatch: null,
                 highlightIndex:index
@@ -32716,10 +32725,13 @@ module.exports = React.createClass({displayName: "exports",
 
             React.createElement("div", {className: "Recipe"}, 
                 React.createElement(EditableInput, {id: "name", typeIn: "input", typeOut: "h1", className: "h1", value: this.props.name, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
-                React.createElement("h2", null, "Ingredients"), 
-                React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredients", value: this.props.ingredients, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
-                React.createElement("h2", null, "Method"), 
-                React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__method", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                React.createElement("div", {className: "Recipe__ingredients"}, 
+                    React.createElement("h2", null, "Ingredients"), 
+                    React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredientsInner", value: this.props.ingredients, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
+                ), React.createElement("div", {className: "Recipe__method"}, 
+                    React.createElement("h2", null, "Method"), 
+                    React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__methodInner", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
+                ), 
                 React.createElement(VoiceControl, {phrases: phrases, onMatch: this.handleMatch}), 
                 React.createElement("button", {className: "Recipe__remove", onClick: this.removeHandler}, "Remove Recipe")
             )

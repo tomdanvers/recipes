@@ -3,18 +3,37 @@
 	padding: 17px;
 
 	.Recipe__ingredients, .Recipe__method {
+		width: 50%;
 		box-sizing: border-box;
 	}
 
 	.Recipe__ingredients {
-		padding-left: 40px;
+		float: left;
+		.Recipe__ingredientsInner {
+			padding-left: 40px;
+			box-sizing: border-box;
+		}
 	}
 
 	.Recipe__method {
+		float: right;
 	}
 
 	.Recipe__remove {
 		margin: 64px 0;
 	}
 	
+	@include breakpoint($palm) {
+		
+		.Recipe__ingredients {
+			float: none;
+			width: 100%;
+		}
+
+		.Recipe__method {
+			float: none;
+			width: 100%;
+		}
+		
+	}
 }
