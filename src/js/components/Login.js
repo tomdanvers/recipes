@@ -14,7 +14,10 @@ module.exports = React.createClass({
             }.bind(this),
             error: function(user, error) {
                 console.log('error', error);
-                this.setState(error);
+                this.setState({
+                    code:error.code,
+                    message:error.message
+                });
             }.bind(this)
         });
 
@@ -29,7 +32,7 @@ module.exports = React.createClass({
         var error = this.state.code === undefined ? null : (<div className="Form__error">{this.state.code} {this.state.message}</div>);
         return (
             <form onSubmit={this.submitHandler} className="panel">
-                <h1>Log In</h1>
+                <h2>Log In</h2>
                 <p>Enter your username and password.</p>
                 <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
                 <input type="password" placeholder="Password" onChange={this.changePasswordHandler} />

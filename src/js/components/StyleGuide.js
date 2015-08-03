@@ -13,10 +13,16 @@ module.exports = React.createClass({
     handleMatch: function(result) {
         console.log('StyleGuide.handleMatch(', result, ')');
     },
+    handlePrevious: function() {
+        console.log('StyleGuide.handlePrevious()');
+    },
+    handleNext: function() {
+        console.log('StyleGuide.handleNext()');
+    },
     render: function() {
         return (
             <div className="StyleGuide">
-                <VoiceControl phrases={['ingredients', 'method', 'method 1', 'method 2']} onMatch={this.handleMatch}/>
+                <VoiceControl phrases={['ingredients', 'method', 'method 1', 'method 2']} onMatch={this.handleMatch} onPrevious={this.handlePrevious} onNext={this.handleNext}/>
                 <div className="StyleGuide__item">
                     <h1 className="StyleGuide__label">EditableInput</h1>
                     <EditableInput id="editable" typeIn="textarea" typeOut="ol" className="Recipe__method" value={"Hello\nWorld!"} highlight={"editable-0"} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />

@@ -122,6 +122,8 @@ module.exports = React.createClass({
 			<div className={classes.join(' ')}>
 				<div className="VoiceControl__panel">
 					<div className="VoiceControl__check"><Checkbox checked={this.state.isChecked} onChange={this.changeHandler}/></div>
+					<button className="VoiceControl__previous" onClick={this.props.onPrevious}></button>
+					<button className="VoiceControl__next" onClick={this.props.onNext}></button>
 					<div className="VoiceControl__result">{this.state.result}</div>
 				</div>
 			</div>

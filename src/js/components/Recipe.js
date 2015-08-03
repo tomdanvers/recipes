@@ -152,6 +152,12 @@ module.exports = React.createClass({
 
         }
     },
+    previousHandler: function() {
+        this.adjustHighlightIndex(-1);
+    },
+    nextHandler: function() {
+        this.adjustHighlightIndex(1);
+    },
     render: function() {
         
         var highlight;
@@ -175,7 +181,7 @@ module.exports = React.createClass({
                     <h2>Method</h2>
                     <EditableInput id="method" typeIn="textarea" typeOut="ol" className="Recipe__methodInner" value={this.props.method} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
                 </div>
-                <VoiceControl phrases={phrases} onMatch={this.handleMatch}/>
+                <VoiceControl phrases={phrases} onMatch={this.handleMatch} onPrevious={this.previousHandler} onNext={this.nextHandler}/>
                 <button className="Recipe__remove" onClick={this.removeHandler}>Remove Recipe</button>
             </div>
 

@@ -32372,7 +32372,7 @@ module.exports = React.createClass({displayName: "exports",
         }
 
         // DEBUG - START
-        // component = <StyleGuide />
+        // component = <StyleGuide />;
         // DEBUG - END
         return (
             React.createElement("div", {className: "App"}, 
@@ -32527,7 +32527,10 @@ module.exports = React.createClass({displayName: "exports",
             }.bind(this),
             error: function(user, error) {
                 console.log('error', error);
-                this.setState(error);
+                this.setState({
+                    code:error.code,
+                    message:error.message
+                });
             }.bind(this)
         });
 
@@ -32542,7 +32545,7 @@ module.exports = React.createClass({displayName: "exports",
         var error = this.state.code === undefined ? null : (React.createElement("div", {className: "Form__error"}, this.state.code, " ", this.state.message));
         return (
             React.createElement("form", {onSubmit: this.submitHandler, className: "panel"}, 
-                React.createElement("h1", null, "Log In"), 
+                React.createElement("h2", null, "Log In"), 
                 React.createElement("p", null, "Enter your username and password."), 
                 React.createElement("input", {type: "text", placeholder: "Username", onChange: this.changeUsernameHandler}), 
                 React.createElement("input", {type: "password", placeholder: "Password", onChange: this.changePasswordHandler}), 
@@ -32709,6 +32712,12 @@ module.exports = React.createClass({displayName: "exports",
 
         }
     },
+    previousHandler: function() {
+        this.adjustHighlightIndex(-1);
+    },
+    nextHandler: function() {
+        this.adjustHighlightIndex(1);
+    },
     render: function() {
         
         var highlight;
@@ -32732,7 +32741,7 @@ module.exports = React.createClass({displayName: "exports",
                     React.createElement("h2", null, "Method"), 
                     React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__methodInner", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
                 ), 
-                React.createElement(VoiceControl, {phrases: phrases, onMatch: this.handleMatch}), 
+                React.createElement(VoiceControl, {phrases: phrases, onMatch: this.handleMatch, onPrevious: this.previousHandler, onNext: this.nextHandler}), 
                 React.createElement("button", {className: "Recipe__remove", onClick: this.removeHandler}, "Remove Recipe")
             )
 
@@ -32759,7 +32768,10 @@ module.exports = React.createClass({displayName: "exports",
             }.bind(this),
             error: function(user, error) {
                 console.log('error', error);
-                this.setState(error);
+                this.setState({
+                    code: error.code,
+                    message: error.message
+                });
             }.bind(this)
         });
 
@@ -32771,14 +32783,15 @@ module.exports = React.createClass({displayName: "exports",
         this.setState({password: event.target.value});
     },
     render: function() {
+        var error = this.state.code === undefined ? null : (React.createElement("div", {className: "Form__error"}, this.state.code, " ", this.state.message));
         return (
             React.createElement("form", {onSubmit: this.submitHandler, className: "panel"}, 
-                React.createElement("h1", null, "Sign Up"), 
+                React.createElement("h2", null, "Sign Up"), 
                 React.createElement("p", null, "Choose a username and password."), 
                 React.createElement("input", {type: "text", placeholder: "Username", onChange: this.changeUsernameHandler}), 
                 React.createElement("input", {type: "password", placeholder: "Password", onChange: this.changePasswordHandler}), 
                 React.createElement("button", null, "Sign Up"), 
-                React.createElement("div", null, this.state.code, " ", this.state.message)
+                error
             )
         );
     }
@@ -32801,10 +32814,16 @@ module.exports = React.createClass({displayName: "exports",
     handleMatch: function(result) {
         console.log('StyleGuide.handleMatch(', result, ')');
     },
+    handlePrevious: function() {
+        console.log('StyleGuide.handlePrevious()');
+    },
+    handleNext: function() {
+        console.log('StyleGuide.handleNext()');
+    },
     render: function() {
         return (
             React.createElement("div", {className: "StyleGuide"}, 
-                React.createElement(VoiceControl, {phrases: ['ingredients', 'method', 'method 1', 'method 2'], onMatch: this.handleMatch}), 
+                React.createElement(VoiceControl, {phrases: ['ingredients', 'method', 'method 1', 'method 2'], onMatch: this.handleMatch, onPrevious: this.handlePrevious, onNext: this.handleNext}), 
                 React.createElement("div", {className: "StyleGuide__item"}, 
                     React.createElement("h1", {className: "StyleGuide__label"}, "EditableInput"), 
                     React.createElement(EditableInput, {id: "editable", typeIn: "textarea", typeOut: "ol", className: "Recipe__method", value: "Hello\nWorld!", highlight: "editable-0", onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
@@ -33201,6 +33220,8 @@ module.exports = React.createClass({displayName: "exports",
 			React.createElement("div", {className: classes.join(' ')}, 
 				React.createElement("div", {className: "VoiceControl__panel"}, 
 					React.createElement("div", {className: "VoiceControl__check"}, React.createElement(Checkbox, {checked: this.state.isChecked, onChange: this.changeHandler})), 
+					React.createElement("button", {className: "VoiceControl__previous", onClick: this.props.onPrevious}), 
+					React.createElement("button", {className: "VoiceControl__next", onClick: this.props.onNext}), 
 					React.createElement("div", {className: "VoiceControl__result"}, this.state.result)
 				)
 			)
