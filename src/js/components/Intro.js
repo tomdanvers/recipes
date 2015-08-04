@@ -6,8 +6,10 @@ module.exports = React.createClass({
     render: function() {
         return (
             <div className="panel">
-                <h1>Welcome!</h1>
-                <p>Log in or sign up to get cooking.</p>
+            	<div className="panel__content">
+	                <h1>Welcome!</h1>
+	                <p>Log in or sign up to get cooking.</p>
+            	</div>
             </div>
         );
     }

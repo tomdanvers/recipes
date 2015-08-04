@@ -31,13 +31,15 @@ module.exports = React.createClass({
     render: function() {
         var error = this.state.code === undefined ? null : (<div className="Form__error">{this.state.code} {this.state.message}</div>);
         return (
-            <form onSubmit={this.submitHandler} className="panel">
-                <h2>Sign Up</h2>
-                <p>Choose a username and password.</p>
-                <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
-                <input type="password" placeholder="Password" onChange={this.changePasswordHandler} />
-                <button>Sign Up</button>
-                {error}
+            <form onSubmit={this.submitHandler} className="panel panel--half panel--halfRight">
+                <div className="panel__content">
+                    <h2>Sign Up</h2>
+                    <p>Choose a username and password.</p>
+                    <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
+                    <input type="password" placeholder="Password" onChange={this.changePasswordHandler} />
+                    <button>Sign Up</button>
+                    {error}
+                </div>
             </form>
         );
     }

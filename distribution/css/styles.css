@@ -84,15 +84,35 @@ input {
   color: #DD0000; }
 
 .panel {
-  background-color: #393A33;
-  border-radius: 4px;
-  padding: 32px;
-  margin: 16px;
-  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  -ms-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  -o-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); }
+  box-sizing: border-box;
+  padding: 16px;
+  padding-bottom: 0; }
+  .panel:last-child {
+    padding-bottom: 16px; }
+  .panel.panel--half {
+    width: 50%; }
+    .panel.panel--half.panel--halfLeft {
+      float: left;
+      padding-right: 8px; }
+    .panel.panel--half.panel--halfRight {
+      float: right;
+      padding-left: 8px; }
+  .panel .panel__content {
+    padding: 16px;
+    background-color: #393A33;
+    -webkit-box-shadow: 0 0 16px rgba(255, 255, 255, 0.05) inset;
+    -moz-box-shadow: 0 0 16px rgba(255, 255, 255, 0.05) inset;
+    -ms-box-shadow: 0 0 16px rgba(255, 255, 255, 0.05) inset;
+    -o-box-shadow: 0 0 16px rgba(255, 255, 255, 0.05) inset;
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.05) inset; }
+
+@media screen and (max-width: 768px) {
+  .panel.panel--half {
+    float: none;
+    width: 100%; }
+    .panel.panel--half.panel--halfLeft, .panel.panel--half.panel--halfRight {
+      padding-left: 16px;
+      padding-right: 16px; } }
 
 button, .button {
   width: 100%;

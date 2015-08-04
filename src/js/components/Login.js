@@ -15,12 +15,21 @@ module.exports = React.createClass({
             error: function(user, error) {
                 console.log('error', error);
                 this.setState({
-                    code:error.code,
-                    message:error.message
+                    code: error.code
                 });
             }.bind(this)
         });
 
+    },
+    getErrorFromCode: function(code) {
+        switch(code) {
+            case 100:
+                return 'Please check your connection and try again.';
+                break;
+            default:
+                return 'An error occured.'
+                break;
+        }
     },
     changeUsernameHandler: function(event) {
         this.setState({username: event.target.value});
@@ -29,15 +38,17 @@ module.exports = React.createClass({
         this.setState({password: event.target.value});
     },
     render: function() {
-        var error = this.state.code === undefined ? null : (<div className="Form__error">{this.state.code} {this.state.message}</div>);
+        var error = this.state.code === undefined ? null : (<div className="Form__error">{this.getErrorFromCode(this.state.code)}</div>);
         return (
-            <form onSubmit={this.submitHandler} className="panel">
-                <h2>Log In</h2>
-                <p>Enter your username and password.</p>
-                <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
-                <input type="password" placeholder="Password" onChange={this.changePasswordHandler} />
-                <button>Log In</button>
-                {error}
+            <form onSubmit={this.submitHandler} className="panel panel--half panel--halfLeft">
+                <div className="panel__content">
+                    <h2>Log In</h2>
+                    <p>Enter your username and password.</p>
+                    <input type="text" placeholder="Username" onChange={this.changeUsernameHandler} />
+                    <input type="password" placeholder="Password" onChange={this.changePasswordHandler} />
+                    <button>Log In</button>
+                    {error}
+                </div>
             </form>
         );
     }
