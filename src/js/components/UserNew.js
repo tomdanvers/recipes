@@ -13,9 +13,11 @@ module.exports = React.createClass({
     render: function() {
         var user = Parse.User.current();
         return (
-            <div className="UserNew">
-                <h1 className="Header">Hello {user.get('username')}, {this.welcomeMessage()}</h1>
-                <div>Select a recipe or create a new one...</div>
+            <div className="UserNew panel">
+                <div className="Header">
+                    <h1>Hello {user.get('username')}, {this.welcomeMessage()}</h1>
+                    <div>Select a recipe or create a new one...</div>
+                </div>
             </div>
         );
 

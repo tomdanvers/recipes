@@ -172,7 +172,7 @@ module.exports = React.createClass({
         
         return (
 
-            <div className="Recipe">
+            <div className="Recipe panel">
                 <EditableInput id="name" typeIn="input" typeOut="h1" className="h1" value={this.props.name} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
                 <div className="Recipe__ingredients">
                     <h2>Ingredients</h2>

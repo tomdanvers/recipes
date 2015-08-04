@@ -10,7 +10,9 @@
  */
 html, body {
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  background: #272822;
+  color: white; }
 
 ol, ul {
   box-sizing: border-box; }
@@ -29,6 +31,7 @@ h1, .h1 {
 
 h2, .h2 {
   font-size: 3em;
+  margin-top: 0;
   font-family: 'Amatic SC';
   font-weight: 700; }
 
@@ -81,10 +84,15 @@ input {
   color: #DD0000; }
 
 .panel {
-  background-color: #EEE;
+  background-color: #393A33;
   border-radius: 4px;
-  padding: 16px;
-  margin: 16px; }
+  padding: 32px;
+  margin: 16px;
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); }
 
 button, .button {
   width: 100%;
@@ -122,20 +130,23 @@ button, .button {
     font-family: Helvetica Neue, Helvetica, Arial, Sans-serif;
     height: 150px; }
   .EditableInput.EditableInput__ol li {
+    padding: 8px;
     margin-bottom: 8px; }
     .EditableInput.EditableInput__ol li:last-child {
       margin-bottom: 0; }
-  .EditableInput.EditableInput__div div {
-    margin-bottom: 8px; }
+  .EditableInput.EditableInput__div {
+    padding: 8px; }
+    .EditableInput.EditableInput__div div {
+      margin-bottom: 8px; }
 
 .is-highlighted {
-  background-color: rgba(255, 255, 0, 0.2);
-  font-weight: bold; }
+  background-color: rgba(32, 32, 32, 0.5);
+  border-radius: 8px; }
 
 .UserNav .UserNav__toggle {
   position: fixed;
-  right: 8px;
-  top: 8px;
+  right: 25px;
+  top: 24px;
   display: block;
   width: 40px;
   height: 40px;
@@ -156,7 +167,7 @@ button, .button {
   transition: opacity 0.5s, visibility 0.5s; }
 
 .UserNav .UserNav__items {
-  background: #EEE;
+  background: #2F2F29;
   display: block;
   margin: 0;
   padding: 16px;
@@ -165,6 +176,7 @@ button, .button {
   top: 0;
   height: 100%;
   width: 225px;
+  border-left: 2px solid #4A4A41;
   -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
   -ms-box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
@@ -197,27 +209,29 @@ button, .button {
   list-style: none;
   padding: 4px; }
 
-.Recipe {
-  padding: 17px; }
-  .Recipe .Recipe__ingredients, .Recipe .Recipe__method {
-    width: 50%;
+.Recipe .Recipe__ingredients, .Recipe .Recipe__method {
+  width: 50%;
+  box-sizing: border-box; }
+
+.Recipe .Recipe__ingredients {
+  float: left; }
+  .Recipe .Recipe__ingredients .Recipe__ingredientsInner {
+    padding-left: 40px;
     box-sizing: border-box; }
+
+.Recipe .Recipe__method {
+  float: right; }
+
+.Recipe .Recipe__remove {
+  margin: 64px 0; }
+
+@media screen and (max-width: 768px) {
   .Recipe .Recipe__ingredients {
-    float: left; }
-    .Recipe .Recipe__ingredients .Recipe__ingredientsInner {
-      padding-left: 40px;
-      box-sizing: border-box; }
+    float: none;
+    width: 100%; }
   .Recipe .Recipe__method {
-    float: right; }
-  .Recipe .Recipe__remove {
-    margin: 64px 0; }
-  @media screen and (max-width: 768px) {
-    .Recipe .Recipe__ingredients {
-      float: none;
-      width: 100%; }
-    .Recipe .Recipe__method {
-      float: none;
-      width: 100%; } }
+    float: none;
+    width: 100%; } }
 
 .VoiceControl {
   position: fixed;

@@ -2,8 +2,8 @@
 	
 	.UserNav__toggle {
 		position: fixed;
-		right: 8px;
-		top: 8px;
+		right: 25px;
+		top: 24px;
 		display: block;
 		width: 40px;
 		height: 40px;
@@ -30,7 +30,7 @@
 	}
 
 	.UserNav__items {
-		background: #EEE;
+		background: #2F2F29;
 		display: block;
 		margin: 0;
 		padding: 16px;
@@ -39,6 +39,7 @@
 		top: 0;
 		height: 100%;
 		width: 225px;
+		border-left: 2px solid #4A4A41;
 		@include vendor(box-shadow, 0 0 16px rgba(0,0,0,.25));
 
 		.UserNav__item, .UserNav__label {

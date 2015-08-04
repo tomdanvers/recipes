@@ -1,6 +1,7 @@
 .panel {
-	background-color: #EEE;
+	background-color: #393A33;
 	border-radius: 4px;
-	padding: 16px;
+	padding: 32px;
 	margin: 16px;
+	@include vendor(box-shadow, 0 0 8px rgba(0,0,0,.1));
 }
