@@ -35,6 +35,11 @@ h2, .h2 {
   font-family: 'Amatic SC';
   font-weight: 700; }
 
+h3, .h3 {
+  font-size: 2em;
+  font-family: 'Amatic SC';
+  font-weight: 400; }
+
 /* latin */
 @font-face {
   font-family: 'Amatic SC';
@@ -229,6 +234,14 @@ button, .button {
   list-style: none;
   padding: 4px; }
 
+.Recipe .Recipe__name {
+  padding-right: 32px;
+  box-sizing: border-box; }
+
+.Recipe .Recipe__description {
+  margin: 32px 0;
+  padding: 0; }
+
 .Recipe .Recipe__ingredients, .Recipe .Recipe__method {
   width: 50%;
   box-sizing: border-box; }
@@ -236,6 +249,7 @@ button, .button {
 .Recipe .Recipe__ingredients {
   float: left; }
   .Recipe .Recipe__ingredients .Recipe__ingredientsInner {
+    line-height: 2em;
     padding-left: 40px;
     box-sizing: border-box; }
 

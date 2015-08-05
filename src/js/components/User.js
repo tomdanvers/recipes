@@ -30,6 +30,7 @@ module.exports = React.createClass({
             case 'new':
                 ParseReact.Mutation.Create('Recipe', {
                     name: 'New Recipe',
+                    description: 'Lorem ipsum dolor sit amet...',
                     ingredients: 'Ingredients',
                     method: 'Method',
                     user: Parse.User.current()
@@ -49,6 +50,7 @@ module.exports = React.createClass({
         this.setState({
             selectedRecipe: recipe,
             name: recipe.name,
+            description: recipe.description,
             ingredients: recipe.ingredients,
             method: recipe.method,
             editing: false
@@ -97,7 +99,7 @@ module.exports = React.createClass({
     },
     render: function() {
         var user = Parse.User.current();
-        var recipe = this.state.selectedRecipe ? (<Recipe id={this.state.selectedRecipe.objectId} name={this.state.name} ingredients={this.state.ingredients} method={this.state.method} editing={this.state.editing} onEditStart={this.editStartHandler} onEditUpdate={this.editUpdateHandler} onEditStop={this.editStopHandler} onRecipeRemove={this.recipeRemoveHandler}/>) : <UserNew/>;
+        var recipe = this.state.selectedRecipe ? (<Recipe id={this.state.selectedRecipe.objectId} name={this.state.name} description={this.state.description} ingredients={this.state.ingredients} method={this.state.method} editing={this.state.editing} onEditStart={this.editStartHandler} onEditUpdate={this.editUpdateHandler} onEditStop={this.editStopHandler} onRecipeRemove={this.recipeRemoveHandler}/>) : <UserNew/>;
         return (
             <div className="User">
                 {recipe}

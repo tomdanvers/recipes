@@ -1,4 +1,12 @@
 .Recipe {
+	.Recipe__name {
+		padding-right: 32px;
+		box-sizing: border-box;
+	}
+	.Recipe__description {
+		margin: 32px 0;
+		padding: 0;
+	}
 
 	.Recipe__ingredients, .Recipe__method {
 		width: 50%;
@@ -8,6 +16,7 @@
 	.Recipe__ingredients {
 		float:left;
 		.Recipe__ingredientsInner {
+			line-height: 2em;
 			padding-left: 40px;
 			box-sizing: border-box;
 		}

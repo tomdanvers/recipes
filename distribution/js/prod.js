@@ -32747,7 +32747,8 @@ module.exports = React.createClass({displayName: "exports",
 
             React.createElement("div", {className: "Recipe panel"}, 
                 React.createElement("div", {className: "panel__content"}, 
-                    React.createElement(EditableInput, {id: "name", typeIn: "input", typeOut: "h1", className: "h1", value: this.props.name, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                    React.createElement(EditableInput, {id: "name", typeIn: "input", typeOut: "h1", className: "Recipe__name h1", value: this.props.name, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
+                    React.createElement(EditableInput, {id: "description", typeIn: "textarea", typeOut: "div", className: "Recipe__description h3", value: this.props.description, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                     React.createElement("div", {className: "Recipe__ingredients"}, 
                         React.createElement("h2", null, "Ingredients"), 
                         React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredientsInner", value: this.props.ingredients, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
@@ -32901,6 +32902,7 @@ module.exports = React.createClass({displayName: "exports",
             case 'new':
                 ParseReact.Mutation.Create('Recipe', {
                     name: 'New Recipe',
+                    description: 'Lorem ipsum dolor sit amet...',
                     ingredients: 'Ingredients',
                     method: 'Method',
                     user: Parse.User.current()
@@ -32920,6 +32922,7 @@ module.exports = React.createClass({displayName: "exports",
         this.setState({
             selectedRecipe: recipe,
             name: recipe.name,
+            description: recipe.description,
             ingredients: recipe.ingredients,
             method: recipe.method,
             editing: false
@@ -32968,7 +32971,7 @@ module.exports = React.createClass({displayName: "exports",
     },
     render: function() {
         var user = Parse.User.current();
-        var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {id: this.state.selectedRecipe.objectId, name: this.state.name, ingredients: this.state.ingredients, method: this.state.method, editing: this.state.editing, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
+        var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {id: this.state.selectedRecipe.objectId, name: this.state.name, description: this.state.description, ingredients: this.state.ingredients, method: this.state.method, editing: this.state.editing, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
         return (
             React.createElement("div", {className: "User"}, 
                 recipe, 
