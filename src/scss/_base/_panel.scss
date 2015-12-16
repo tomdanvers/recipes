@@ -1,5 +1,5 @@
 .panel {
-	// margin: 16px 0;
+
 	box-sizing: border-box;
 	padding: 16px;
 	padding-bottom: 0;
@@ -25,9 +25,9 @@
 	}
 
 	.panel__content {
-		padding: 16px;
-		background-color: #393A33;
-		@include vendor(box-shadow, 0 0 16px rgba(255, 255, 255, .05) inset);
+		padding: 32px;
+		background-color: #FFF;
+		@include vendor(box-shadow, 0 8px 16px rgba(0, 0, 0, .15));
 	}
 
 }

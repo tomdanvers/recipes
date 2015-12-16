@@ -30,7 +30,7 @@
 	}
 
 	.UserNav__items {
-		background: #2F2F29;
+		background: #FFF;
 		display: block;
 		margin: 0;
 		padding: 16px;
@@ -39,8 +39,17 @@
 		top: 0;
 		height: 100%;
 		width: 225px;
-		border-left: 2px solid #4A4A41;
 		@include vendor(box-shadow, 0 0 16px rgba(0,0,0,.25));
+
+		.UserNav__item {
+			border-bottom: 1px solid rgba(0,0,0,.1);
+		}
+
+		#new {
+			border-bottom: none;
+			font-weight: 300;
+			color: #0DC70D;	
+		}
 
 		.UserNav__item, .UserNav__label {
 			&:first-child {
@@ -67,9 +76,6 @@
 }
 
 .UserNav__label {
-	font-family: 'Amatic SC';
-	font-weight: 700;
-	font-size: 2em;
 	list-style: none;
 	font-weight: bold;
 	padding: 4px;

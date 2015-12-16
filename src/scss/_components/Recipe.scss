@@ -11,6 +11,7 @@
 	.Recipe__ingredients, .Recipe__method {
 		width: 50%;
 		box-sizing: border-box;
+		margin-bottom: 16px;
 	}
 
 	.Recipe__ingredients {
@@ -27,7 +28,7 @@
 	}
 
 	.Recipe__remove {
-		margin: 64px 0;
+		margin: 64px 0 0 0;
 	}
 	
 	@include breakpoint($palm) {
