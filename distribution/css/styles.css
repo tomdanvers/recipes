@@ -186,6 +186,8 @@ button, .button {
     border-bottom: none;
     font-weight: 300;
     color: #0DC70D; }
+  .UserNav .UserNav__items .UserNav__item:last-child, .UserNav .UserNav__items .UserNav__label:last-child {
+    border-bottom: none; }
   .UserNav .UserNav__items .UserNav__item:first-child, .UserNav .UserNav__items .UserNav__label:first-child {
     margin-top: 50px; }
 

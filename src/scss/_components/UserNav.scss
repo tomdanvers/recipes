@@ -52,6 +52,9 @@
 		}
 
 		.UserNav__item, .UserNav__label {
+			&:last-child { 
+				border-bottom: none;
+			}
 			&:first-child {
 				margin-top: 50px;
 			}
