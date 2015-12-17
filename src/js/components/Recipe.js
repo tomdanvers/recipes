@@ -22,16 +22,18 @@ module.exports = React.createClass({
                     <h1 id="name" className="Recipe__name h1">{this.props.name}</h1>
                     <h2 id="user" className="Recipe__user h2">by {this.props.user.toUpperCase()}</h2>
                     <div id="description" className="Recipe__description">{this.props.description}</div>
-                    <div className="Recipe__ingredients">
-                        <h2>Ingredients</h2>
-                        <div id="ingredients" className="Recipe__ingredientsInner">
-                            {this.props.ingredients}
+                    <div className="cf">
+                        <div className="Recipe__ingredients">
+                            <h2>Ingredients</h2>
+                            <div id="ingredients" className="Recipe__ingredientsInner">
+                                {this.props.ingredients}
+                            </div>
+                        </div><div className="Recipe__method">
+                            <h2>Method</h2>
+                            <ol id="method" className="Recipe__methodInner">
+                                {methodList}
+                            </ol>
                         </div>
-                    </div><div className="Recipe__method">
-                        <h2>Method</h2>
-                        <ol id="method" className="Recipe__methodInner">
-                            {methodList}
-                        </ol>
                     </div>
                 </div>
             </div>

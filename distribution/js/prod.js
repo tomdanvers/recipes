@@ -32592,15 +32592,17 @@ module.exports = React.createClass({displayName: "exports",
                     React.createElement("h1", {id: "name", className: "Recipe__name h1"}, this.props.name), 
                     React.createElement("h2", {id: "user", className: "Recipe__user h2"}, "by ", this.props.user.toUpperCase()), 
                     React.createElement("div", {id: "description", className: "Recipe__description"}, this.props.description), 
-                    React.createElement("div", {className: "Recipe__ingredients"}, 
-                        React.createElement("h2", null, "Ingredients"), 
-                        React.createElement("div", {id: "ingredients", className: "Recipe__ingredientsInner"}, 
-                            this.props.ingredients
-                        )
-                    ), React.createElement("div", {className: "Recipe__method"}, 
-                        React.createElement("h2", null, "Method"), 
-                        React.createElement("ol", {id: "method", className: "Recipe__methodInner"}, 
-                            methodList
+                    React.createElement("div", {className: "cf"}, 
+                        React.createElement("div", {className: "Recipe__ingredients"}, 
+                            React.createElement("h2", null, "Ingredients"), 
+                            React.createElement("div", {id: "ingredients", className: "Recipe__ingredientsInner"}, 
+                                this.props.ingredients
+                            )
+                        ), React.createElement("div", {className: "Recipe__method"}, 
+                            React.createElement("h2", null, "Method"), 
+                            React.createElement("ol", {id: "method", className: "Recipe__methodInner"}, 
+                                methodList
+                            )
                         )
                     )
                 )
@@ -32795,12 +32797,14 @@ module.exports = React.createClass({displayName: "exports",
                 React.createElement("div", {className: "panel__content"}, 
                     React.createElement(EditableInput, {id: "name", typeIn: "input", typeOut: "h1", className: "Recipe__name h1", value: this.props.name, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
                     React.createElement(EditableInput, {id: "description", typeIn: "textarea", typeOut: "div", className: "Recipe__description", value: this.props.description, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop}), 
-                    React.createElement("div", {className: "Recipe__ingredients"}, 
-                        React.createElement("h2", null, "Ingredients"), 
-                        React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredientsInner", value: this.props.ingredients, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
-                    ), React.createElement("div", {className: "Recipe__method"}, 
-                        React.createElement("h2", null, "Method"), 
-                        React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__methodInner", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
+                    React.createElement("div", {className: "cf"}, 
+                        React.createElement("div", {className: "Recipe__ingredients"}, 
+                            React.createElement("h2", null, "Ingredients"), 
+                            React.createElement(EditableInput, {id: "ingredients", typeIn: "textarea", typeOut: "div", className: "Recipe__ingredientsInner", value: this.props.ingredients, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
+                        ), React.createElement("div", {className: "Recipe__method"}, 
+                            React.createElement("h2", null, "Method"), 
+                            React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__methodInner", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
+                        )
                     ), 
                     React.createElement("div", {className: "Recipe__public"}, 
                         React.createElement("h2", null, "Public?"), 

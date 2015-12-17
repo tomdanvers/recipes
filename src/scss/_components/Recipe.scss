@@ -31,10 +31,6 @@
 	.Recipe__remove {
 		margin: 64px 0 0 0;
 	}
-
-	.Recipe__public {
-		clear: both;
-	}
 	
 	@include breakpoint($palm) {
 		

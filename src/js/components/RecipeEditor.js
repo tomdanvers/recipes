@@ -180,12 +180,14 @@ module.exports = React.createClass({
                 <div className="panel__content">
                     <EditableInput id="name" typeIn="input" typeOut="h1" className="Recipe__name h1" value={this.props.name} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
                     <EditableInput id="description" typeIn="textarea" typeOut="div" className="Recipe__description" value={this.props.description} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
-                    <div className="Recipe__ingredients">
-                        <h2>Ingredients</h2>
-                        <EditableInput id="ingredients" typeIn="textarea" typeOut="div" className="Recipe__ingredientsInner" value={this.props.ingredients} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
-                    </div><div className="Recipe__method">
-                        <h2>Method</h2>
-                        <EditableInput id="method" typeIn="textarea" typeOut="ol" className="Recipe__methodInner" value={this.props.method} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
+                    <div className="cf">
+                        <div className="Recipe__ingredients">
+                            <h2>Ingredients</h2>
+                            <EditableInput id="ingredients" typeIn="textarea" typeOut="div" className="Recipe__ingredientsInner" value={this.props.ingredients} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
+                        </div><div className="Recipe__method">
+                            <h2>Method</h2>
+                            <EditableInput id="method" typeIn="textarea" typeOut="ol" className="Recipe__methodInner" value={this.props.method} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
+                        </div>
                     </div>
                     <div className="Recipe__public">
                         <h2>Public?</h2>
