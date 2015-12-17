@@ -8,8 +8,8 @@
 		display: inline-block;
 		width: 40px;
 		height: 20px;
-		border: 1px solid #656565;
-		background-color: #737070;
+		border: 1px solid #CECECE;
+		background-color: #DEDEDE;
 		position: relative;
 		border-radius: 10px;
 		&:after {
@@ -19,8 +19,8 @@
 			height: 18px;
 			left: 0;
 			position: absolute;
-			border: 1px solid #2E792E;
-			background-color: #368136;
+			border: 1px solid #C5C5C5;
+			background-color: #919291;
 			transition: left .75s, background-color .25s, box-shadow, .25s;
 			border-radius: 10px;
 		}
@@ -29,9 +29,9 @@
 	input[type="checkbox"]:checked + label span {
 		&:after {
 			left: 20px;
-			background-color: #8EFF8E;
-			border: 1px solid #8EFF8E;
-			@include vendor(box-shadow, 0 0 5px #8EFF8E);
+			background-color: #61D061;
+			border: 1px solid #7AF97A;
+			// @include vendor(box-shadow, 0 0 5px #D5FDD5);
 			transition: left .75s, background-color .25s, box-shadow, .25s;
 		}
 	}

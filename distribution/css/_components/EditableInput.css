@@ -9,12 +9,15 @@
     font-family: Helvetica Neue, Helvetica, Arial, Sans-serif;
     height: 150px; }
   .EditableInput.EditableInput__ol li {
+    padding: 8px;
     margin-bottom: 8px; }
     .EditableInput.EditableInput__ol li:last-child {
       margin-bottom: 0; }
-  .EditableInput.EditableInput__div div {
-    margin-bottom: 8px; }
+  .EditableInput.EditableInput__div {
+    padding: 8px; }
+    .EditableInput.EditableInput__div div {
+      margin-bottom: 8px; }
 
 .is-highlighted {
-  background-color: rgba(255, 255, 0, 0.2);
-  font-weight: bold; }
+  background-color: rgba(32, 32, 32, 0.5);
+  border-radius: 8px; }

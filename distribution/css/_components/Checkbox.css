@@ -6,22 +6,23 @@
     display: inline-block;
     width: 40px;
     height: 20px;
-    border: 1px solid darkgrey;
-    background-color: darkgrey;
+    border: 1px solid #CECECE;
+    background-color: #DEDEDE;
     position: relative;
     border-radius: 10px; }
     .Checkbox input[type="checkbox"] + label span:after {
       content: '';
       display: inline-block;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       left: 0;
       position: absolute;
-      background-color: grey;
-      transition: left 0.5s;
+      border: 1px solid #C5C5C5;
+      background-color: #919291;
+      transition: left .75s, background-color .25s, box-shadow, .25s;
       border-radius: 10px; }
   .Checkbox input[type="checkbox"]:checked + label span:after {
     left: 20px;
-    background-color: #8EFF8E;
-    box-shadow: #8EFF8E 0 0 0;
-    transition: left 0.5s, background-color 0.5s; }
+    background-color: #61D061;
+    border: 1px solid #7AF97A;
+    transition: left .75s, background-color .25s, box-shadow, .25s; }

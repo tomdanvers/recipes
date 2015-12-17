@@ -4,9 +4,10 @@
 	padding: 16px;
 	margin-bottom: 16px;
 	padding-bottom: 0;
+	clear: both;
 
 	&:last-child {
-		padding-bottom: 16px;
+		// padding-bottom: 16px;
 	}
 
 	&.panel--half {
@@ -16,11 +17,13 @@
 		&.panel--halfLeft {
 			float: left;
 			padding-right: 8px;
+			clear: none;
 		}
 
 		&.panel--halfRight {
 			float: right;
 			padding-left: 8px;
+			clear: none;
 		}
 
 	}

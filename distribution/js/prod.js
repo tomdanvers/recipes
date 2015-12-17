@@ -32251,41 +32251,84 @@ var ParseReact = require('parse-react');
 
 var UserAuthentication = require('./UserAuthentication');
 var User = require('./User');
+var UserProfile = require('./UserProfile');
+var PublicRecipes = require('./PublicRecipes');
 var StyleGuide = require('./StyleGuide');
+var Recipe = require('./Recipe');
 
 module.exports = React.createClass({displayName: "exports",
     mixins: [ParseReact.Mixin],
     getInitialState: function() {
         return {
-            isLoggedIn: false
+            recipe: null,
+            user: null
         };
     },
     observe: function() {
         return {
-            user: ParseReact.currentUser
+            user: ParseReact.currentUser,
+            recipes: (new Parse.Query('Recipe'))
+                .include('user')
+                .equalTo('public', true)
+                .descending('createdAt'),
+            users: (new Parse.Query('_User'))
+                .descending('createdAt')                      
         };
     },
+    recipeClickHandler: function(id) {
+        this.setState({
+            recipe: id
+        });
+    },
+    userClickHandler: function(id) {
+        this.setState({
+            user: id
+        });
+    },
+    getRecipeById: function(id) {
+        for (var i = 0; i < this.data.recipes.length; i++) {
+            if (this.data.recipes[i].objectId === id.split(':')[1]) {
+                return this.data.recipes[i];
+            }
+        }
+    },
+    getUserById: function(id) {
+        for (var i = 0; i < this.data.users.length; i++) {
+            if (this.data.users[i].objectId === id.split(':')[1]) {
+                return this.data.users[i];
+            }
+        }
+    },
     render: function() {
-        var component;
-        if (this.data.user) {
-            component = React.createElement(User, null);
+        var content;
+        if (this.state.recipe) {
+            var recipe = this.getRecipeById(this.state.recipe);
+            content = React.createElement(Recipe, {id: this.state.recipe, name: recipe.name, user: recipe.user.username, description: recipe.description, ingredients: recipe.ingredients, method: recipe.method})
+        } else if (this.state.user) {
+            var user = this.getUserById(this.state.user);
+            console.log(user)
+            content = React.createElement(UserProfile, {id: this.state.user, name: user.username, createdAt: user.createdAt});
+        } else if (this.data.user) {
+            content = React.createElement(User, null);
         } else {
-            component = React.createElement(UserAuthentication, null);
+            content = (
+                React.createElement("div", null, 
+                    React.createElement(UserAuthentication, null), 
+                    React.createElement(PublicRecipes, {recipes: this.data.recipes, onRecipeClick: this.recipeClickHandler, onUserClick: this.userClickHandler})
+                )
+            );
         }
 
-        // DEBUG - START
-        // component = <StyleGuide />;
-        // DEBUG - END
         return (
             React.createElement("div", {className: "App"}, 
-                component
+                content
             )
         );
     }
 });
 
 
-},{"./StyleGuide":184,"./User":185,"./UserAuthentication":186,"parse":21,"parse-react":2,"react":176}],178:[function(require,module,exports){
+},{"./PublicRecipes":182,"./Recipe":183,"./StyleGuide":186,"./User":187,"./UserAuthentication":188,"./UserProfile":193,"parse":21,"parse-react":2,"react":176}],178:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32477,9 +32520,107 @@ var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
-var EditableInput = require('./EditableInput');
+module.exports = React.createClass({displayName: "exports",
+    mixins: [ParseReact.Mixin],
+    observe: function() {
+        return {
+            recipes: (new Parse.Query('Recipe'))
+                .include('user')
+                .equalTo('public', true)
+                .descending('createdAt')
+        };
+    },
+    getInitialState: function() {
+        return {};
+    },
+    recipeClickHandler: function(event) {
+        event.preventDefault();
+        console.log('PublicRecipes.recipeClickHandler(', event.target.id, ')');
+        this.props.onRecipeClick(event.target.id);
+    },
+    userClickHandler: function(event) {
+        event.preventDefault();
+        console.log('PublicRecipes.userClickHandler(', event.target.id, ')');
+        this.props.onUserClick(event.target.id);
+    },
+    render: function() {
+        var contents;
+        if (this.data.recipes.length > 0) {
+            var that = this;
+            contents = this.data.recipes.map(function(recipe) {
+                return (
+                    React.createElement("div", {id: recipe.id, key: recipe.id}, React.createElement("a", {id: recipe.id, href: "#", onClick: that.recipeClickHandler}, recipe.name), " by ", React.createElement("a", {id: recipe.user.id, href: "#", onClick: that.userClickHandler}, recipe.user.username))
+                );
+            });
+        } else {
+            contents = React.createElement("div", null, "No public recipes...");
+        }
+        return (
+            React.createElement("div", {className: "panel"}, 
+                React.createElement("div", {className: "panel__content"}, 
+                    React.createElement("h2", null, "Public Recipes"), 
+                    contents
+                )
+            )
+        );
+    }
+});
 
-var VoiceControl = require('./VoiceControl');
+
+},{"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
+var React = require('react');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+
+module.exports = React.createClass({displayName: "exports",
+    render: function() {
+
+        var ingredients = this.props.ingredients === undefined ? [] : this.props.ingredients.split('\n');
+        var ingredientsList = ingredients.map(function(item, index) {
+            return React.createElement("li", {key: index}, item)
+        });
+
+        var method = this.props.method === undefined ? [] : this.props.method.split('\n');
+        var methodList = method.map(function(item, index) {
+            return React.createElement("li", {key: index}, item)
+        });
+        
+        return (
+
+            React.createElement("div", {className: "Recipe panel"}, 
+                React.createElement("div", {className: "panel__content"}, 
+                    React.createElement("h1", {id: "name", className: "Recipe__name h1"}, this.props.name), 
+                    React.createElement("h2", {id: "user", className: "Recipe__user h2"}, "by ", this.props.user.toUpperCase()), 
+                    React.createElement("div", {id: "description", className: "Recipe__description"}, this.props.description), 
+                    React.createElement("div", {className: "Recipe__ingredients"}, 
+                        React.createElement("h2", null, "Ingredients"), 
+                        React.createElement("div", {id: "ingredients", className: "Recipe__ingredientsInner"}, 
+                            this.props.ingredients
+                        )
+                    ), React.createElement("div", {className: "Recipe__method"}, 
+                        React.createElement("h2", null, "Method"), 
+                        React.createElement("ol", {id: "method", className: "Recipe__methodInner"}, 
+                            methodList
+                        )
+                    )
+                )
+            )
+
+        );
+
+    }
+});
+
+
+},{"parse":21,"parse-react":2,"react":176}],184:[function(require,module,exports){
+var React = require('react');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+
+var EditableInput = require('./EditableInput');
+var Checkbox = require('./Checkbox');
+
+// var VoiceControl = require('./VoiceControl');
 
 module.exports = React.createClass({displayName: "exports",
     highlights: [],
@@ -32633,6 +32774,9 @@ module.exports = React.createClass({displayName: "exports",
     nextHandler: function() {
         this.adjustHighlightIndex(1);
     },
+    publicChangeHandler: function(event) {
+        this.props.onPublicChange(event.target.checked);
+    },
     render: function() {
         
         var highlight;
@@ -32658,6 +32802,10 @@ module.exports = React.createClass({displayName: "exports",
                         React.createElement("h2", null, "Method"), 
                         React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__methodInner", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
                     ), 
+                    React.createElement("div", null, 
+                        React.createElement("h2", null, "Public?"), 
+                        React.createElement(Checkbox, {id: "public", checked: this.props.public, onChange: this.publicChangeHandler})
+                    ), 
                     React.createElement("button", {className: "Recipe__remove", onClick: this.removeHandler}, "Remove Recipe")
                 )
             )
@@ -32668,7 +32816,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./EditableInput":179,"./VoiceControl":191,"parse":21,"parse-react":2,"react":176}],183:[function(require,module,exports){
+},{"./Checkbox":178,"./EditableInput":179,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32717,7 +32865,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],184:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],186:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32770,14 +32918,14 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./EditableInput":179,"./Login":181,"./Signup":183,"./UserNavItem":188,"./UserNavLabel":189,"./VoiceControl":191,"parse":21,"parse-react":2,"react":176}],185:[function(require,module,exports){
+},{"./EditableInput":179,"./Login":181,"./Signup":185,"./UserNavItem":190,"./UserNavLabel":191,"./VoiceControl":194,"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
 
 var UserNav = require('./UserNav');
 var UserNew = require('./UserNew');
-var Recipe = require('./Recipe');
+var RecipeEditor = require('./RecipeEditor');
 
 module.exports = React.createClass({displayName: "exports",
     mixins: [ParseReact.Mixin],
@@ -32806,6 +32954,7 @@ module.exports = React.createClass({displayName: "exports",
                     description: 'Lorem ipsum dolor sit amet...',
                     ingredients: 'Ingredients',
                     method: 'Method',
+                    public: false,
                     user: Parse.User.current()
                 })
                 .dispatch()
@@ -32820,12 +32969,14 @@ module.exports = React.createClass({displayName: "exports",
         }
     },
     selectRecipe: function(recipe) {
+        console.log('select', recipe.public);
         this.setState({
             selectedRecipe: recipe,
             name: recipe.name,
             description: recipe.description,
             ingredients: recipe.ingredients,
             method: recipe.method,
+            public: recipe.public,
             editing: false
         });
     },
@@ -32862,17 +33013,32 @@ module.exports = React.createClass({displayName: "exports",
         });
 
     },
+    publicChangeHandler: function(value) {
+
+        var payload = {
+            public: value
+        };
+
+        this.setState(payload);
+        
+        ParseReact.Mutation.Set(this.state.selectedRecipe, payload).dispatch();
+
+    },
     recipeRemoveHandler: function() {
+
         ParseReact.Mutation.Destroy(this.state.selectedRecipe)
+
             .dispatch()
             .then(function() {
                 this.refreshQueries();
                 this.selectRecipe(this.data.recipes[0]);
             }.bind(this));
+
     },
     render: function() {
+        console.log('RENDER', this.state.public)
         var user = Parse.User.current();
-        var recipe = this.state.selectedRecipe ? (React.createElement(Recipe, {id: this.state.selectedRecipe.objectId, name: this.state.name, description: this.state.description, ingredients: this.state.ingredients, method: this.state.method, editing: this.state.editing, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
+        var recipe = this.state.selectedRecipe ? (React.createElement(RecipeEditor, {id: this.state.selectedRecipe.objectId, public: this.state.public, name: this.state.name, description: this.state.description, ingredients: this.state.ingredients, method: this.state.method, editing: this.state.editing, onEditStart: this.editStartHandler, onEditUpdate: this.editUpdateHandler, onEditStop: this.editStopHandler, onPublicChange: this.publicChangeHandler, onRecipeRemove: this.recipeRemoveHandler})) : React.createElement(UserNew, null);
         return (
             React.createElement("div", {className: "User"}, 
                 recipe, 
@@ -32883,7 +33049,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./Recipe":182,"./UserNav":187,"./UserNew":190,"parse":21,"parse-react":2,"react":176}],186:[function(require,module,exports){
+},{"./RecipeEditor":184,"./UserNav":189,"./UserNew":192,"parse":21,"parse-react":2,"react":176}],188:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32905,7 +33071,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./Intro":180,"./Login":181,"./Signup":183,"parse":21,"parse-react":2,"react":176}],187:[function(require,module,exports){
+},{"./Intro":180,"./Login":181,"./Signup":185,"parse":21,"parse-react":2,"react":176}],189:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32961,7 +33127,7 @@ var UserNavLabel = require('./UserNavLabel');
     });
 
 
-},{"./UserNavItem":188,"./UserNavLabel":189,"parse":21,"parse-react":2,"react":176}],188:[function(require,module,exports){
+},{"./UserNavItem":190,"./UserNavLabel":191,"parse":21,"parse-react":2,"react":176}],190:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32977,7 +33143,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],189:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],191:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -32990,7 +33156,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],190:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],192:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -33018,7 +33184,34 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"parse":21,"parse-react":2,"react":176}],191:[function(require,module,exports){
+},{"parse":21,"parse-react":2,"react":176}],193:[function(require,module,exports){
+var React = require('react');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+
+module.exports = React.createClass({displayName: "exports",
+    mixins: [ParseReact.Mixin],
+    observe: function() {
+        return {
+            user: new Parse.Query('_User')
+                .equalTo('id', this.props.id)
+        };
+    },
+    render: function() {
+        console.log(this.props.createdAt)
+        return (
+            React.createElement("div", {className: "Recipe panel"}, 
+                React.createElement("div", {className: "panel__content"}, 
+                    React.createElement("h1", {id: "name", className: "h1"}, this.props.name), 
+                    React.createElement("h2", {id: "name", className: "h2"}, this.props.createdAt.toString())
+                )
+            )
+        );
+    }
+});
+
+
+},{"parse":21,"parse-react":2,"react":176}],194:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -33152,7 +33345,7 @@ module.exports = React.createClass({displayName: "exports",
 	}
 });
 
-},{"./Checkbox":178,"parse":21,"parse-react":2,"react":176}],192:[function(require,module,exports){
+},{"./Checkbox":178,"parse":21,"parse-react":2,"react":176}],195:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse').Parse;
 var ParseReact = require('parse-react');
@@ -33168,4 +33361,4 @@ React.render(
 );
 
 
-},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[192])
+},{"./components/App":177,"parse":21,"parse-react":2,"react":176}]},{},[195])

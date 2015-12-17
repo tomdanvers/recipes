@@ -64,17 +64,18 @@ input {
   box-sizing: border-box;
   padding: 16px;
   margin-bottom: 16px;
-  padding-bottom: 0; }
-  .panel:last-child {
-    padding-bottom: 16px; }
+  padding-bottom: 0;
+  clear: both; }
   .panel.panel--half {
     width: 50%; }
     .panel.panel--half.panel--halfLeft {
       float: left;
-      padding-right: 8px; }
+      padding-right: 8px;
+      clear: none; }
     .panel.panel--half.panel--halfRight {
       float: right;
-      padding-left: 8px; }
+      padding-left: 8px;
+      clear: none; }
   .panel .panel__content {
     padding: 32px;
     background-color: #FFF;
@@ -231,7 +232,8 @@ button, .button {
   .Recipe .Recipe__ingredients .Recipe__ingredientsInner {
     line-height: 2em;
     padding-left: 40px;
-    box-sizing: border-box; }
+    box-sizing: border-box;
+    white-space: pre-line; }
 
 .Recipe .Recipe__method {
   float: right; }
@@ -307,8 +309,8 @@ button, .button {
     display: inline-block;
     width: 40px;
     height: 20px;
-    border: 1px solid #656565;
-    background-color: #737070;
+    border: 1px solid #CECECE;
+    background-color: #DEDEDE;
     position: relative;
     border-radius: 10px; }
     .Checkbox input[type="checkbox"] + label span:after {
@@ -318,19 +320,14 @@ button, .button {
       height: 18px;
       left: 0;
       position: absolute;
-      border: 1px solid #2E792E;
-      background-color: #368136;
+      border: 1px solid #C5C5C5;
+      background-color: #919291;
       transition: left .75s, background-color .25s, box-shadow, .25s;
       border-radius: 10px; }
   .Checkbox input[type="checkbox"]:checked + label span:after {
     left: 20px;
-    background-color: #8EFF8E;
-    border: 1px solid #8EFF8E;
-    -webkit-box-shadow: 0 0 5px #8EFF8E;
-    -moz-box-shadow: 0 0 5px #8EFF8E;
-    -ms-box-shadow: 0 0 5px #8EFF8E;
-    -o-box-shadow: 0 0 5px #8EFF8E;
-    box-shadow: 0 0 5px #8EFF8E;
+    background-color: #61D061;
+    border: 1px solid #7AF97A;
     transition: left .75s, background-color .25s, box-shadow, .25s; }
 
 .StyleGuide .StyleGuide__item {
