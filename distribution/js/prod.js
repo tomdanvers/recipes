@@ -32802,7 +32802,7 @@ module.exports = React.createClass({displayName: "exports",
                         React.createElement("h2", null, "Method"), 
                         React.createElement(EditableInput, {id: "method", typeIn: "textarea", typeOut: "ol", className: "Recipe__methodInner", value: this.props.method, highlight: highlight, onFocus: this.props.onEditStart, onChange: this.props.onEditUpdate, onBlur: this.props.onEditStop})
                     ), 
-                    React.createElement("div", null, 
+                    React.createElement("div", {className: "Recipe__public"}, 
                         React.createElement("h2", null, "Public?"), 
                         React.createElement(Checkbox, {id: "public", checked: this.props.public, onChange: this.publicChangeHandler})
                     ), 

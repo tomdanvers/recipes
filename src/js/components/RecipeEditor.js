@@ -187,7 +187,7 @@ module.exports = React.createClass({
                         <h2>Method</h2>
                         <EditableInput id="method" typeIn="textarea" typeOut="ol" className="Recipe__methodInner" value={this.props.method} highlight={highlight} onFocus={this.props.onEditStart} onChange={this.props.onEditUpdate} onBlur={this.props.onEditStop} />
                     </div>
-                    <div>
+                    <div className="Recipe__public">
                         <h2>Public?</h2>
                         <Checkbox id='public' checked={this.props.public} onChange={this.publicChangeHandler}/>
                     </div>

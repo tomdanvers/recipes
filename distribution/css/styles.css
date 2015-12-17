@@ -241,6 +241,9 @@ button, .button {
 .Recipe .Recipe__remove {
   margin: 64px 0 0 0; }
 
+.Recipe .Recipe__public {
+  clear: both; }
+
 @media screen and (max-width: 768px) {
   .Recipe .Recipe__ingredients {
     float: none;
