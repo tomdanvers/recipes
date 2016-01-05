@@ -154,7 +154,8 @@ button, .button {
   width: 40px;
   height: 40px;
   background-image: url(/img/nav-toggle.gif);
-  background-image: url(/img/nav-toggle.png); }
+  background-image: url(/img/nav-toggle.png);
+  background-image: url(/img/nav-toggle.svg); }
 
 .UserNav .UserNav__blocker {
   content: '';
